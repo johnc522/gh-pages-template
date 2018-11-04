@@ -37,8 +37,8 @@ JSIL.DeclareNamespace("senior_clock_html5");
       $T03().OutputAppFilesPath = "app-cshtml5\\app\\";
       $T03().OutputLibrariesPath = "app-cshtml5\\libs\\";
       $T03().OutputResourcesPath = "app-cshtml5\\res\\";
-      var ResourceDictionary_1557f0253c97476bbe7bbb5e7e3beebf = new ($T04())();
-      this['set_Resources'](ResourceDictionary_1557f0253c97476bbe7bbb5e7e3beebf);
+      var ResourceDictionary_e1e5fe29e7a74ec0b8432d2a8dc3156c = new ($T04())();
+      this['set_Resources'](ResourceDictionary_e1e5fe29e7a74ec0b8432d2a8dc3156c);
     }
   };
 
@@ -66,6 +66,549 @@ JSIL.DeclareNamespace("senior_clock_html5");
   });
 
 })();
+
+/* class SunTimes */ 
+
+(function SunTimes$Members () {
+  var $, $thisType;
+  var $T00 = function () {
+    return ($T00 = JSIL.Memoize($asm_mscorlib.System.Object)) ();
+  };
+  var $T01 = function () {
+    return ($T01 = JSIL.Memoize(System.Array.Of($asm_mscorlib.System.Int32))) ();
+  };
+  var $T02 = function () {
+    return ($T02 = JSIL.Memoize($asm_mscorlib.System.Int32)) ();
+  };
+  var $T03 = function () {
+    return ($T03 = JSIL.Memoize(System.Array.Of($asm_mscorlib.System.Double))) ();
+  };
+  var $T04 = function () {
+    return ($T04 = JSIL.Memoize($asm_mscorlib.System.Double)) ();
+  };
+  var $T05 = function () {
+    return ($T05 = JSIL.Memoize($asm_mscorlib.System.Math)) ();
+  };
+  var $T06 = function () {
+    return ($T06 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LatitudeCoords)) ();
+  };
+  var $T07 = function () {
+    return ($T07 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LongitudeCoords)) ();
+  };
+  var $T08 = function () {
+    return ($T08 = JSIL.Memoize($asm_mscorlib.System.DateTime)) ();
+  };
+  var $T09 = function () {
+    return ($T09 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_Coords)) ();
+  };
+  var $T0A = function () {
+    return ($T0A = JSIL.Memoize($asm_mscorlib.System.Boolean)) ();
+  };
+  var $T0B = function () {
+    return ($T0B = JSIL.Memoize($asm_mscorlib.System.Threading.Monitor)) ();
+  };
+  var $S00 = function () {
+    return ($S00 = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.Boolean"), [
+        $asm_mscorlib.TypeRef("System.Double"), $asm_mscorlib.TypeRef("System.Double"), 
+        $asm_mscorlib.TypeRef("System.DateTime"), $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")]), 
+        $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")])
+      ]))) ();
+  };
+  var $S01 = function () {
+    return ($S01 = JSIL.Memoize(new JSIL.ConstructorSignature($asm_mscorlib.TypeRef("System.DateTime"), [
+        $asm_mscorlib.TypeRef("System.Int32"), $asm_mscorlib.TypeRef("System.Int32"), 
+        $asm_mscorlib.TypeRef("System.Int32"), $asm_mscorlib.TypeRef("System.Int32"), 
+        $asm_mscorlib.TypeRef("System.Int32"), $asm_mscorlib.TypeRef("System.Int32")
+      ]))) ();
+  };
+
+  function SunTimes__ctor () {
+    this.mLock = new ($T00())();
+    var array = JSIL.Array.New($T02(), 2);
+    this.mRiseTimeArr = array;
+    array = JSIL.Array.New($T02(), 2);
+    this.mSetTimeArr = array;
+    this.mRizeAzimuth = 0;
+    this.mSetAzimuth = 0;
+    var array2 = JSIL.Array.New($T04(), 2);
+    this.mSunPositionInSkyArr = array2;
+    array2 = JSIL.Array.New($T04(), 3);
+    this.mRightAscentionArr = array2;
+    array2 = JSIL.Array.New($T04(), 3);
+    this.mDecensionArr = array2;
+    array2 = JSIL.Array.New($T04(), 3);
+    this.mVHzArr = array2;
+    this.mIsSunrise = false;
+    this.mIsSunset = false;
+  };
+
+  function SunTimes_CalculateSunPosition (jd, ct) {
+    var lo = 0.779072 + (0.00273790931 * +jd);
+    lo -= (Math.floor(lo));
+    lo = (lo * 2) * 3.1415926535897931;
+    var g = 0.993126 + (0.0027377785 * +jd);
+    g -= (Math.floor(g));
+    g = (g * 2) * 3.1415926535897931;
+    var v = 0.39785 * (Math.sin(lo));
+    v -= 0.01 * (Math.sin((lo - g)));
+    v += 0.00333 * (Math.sin((lo + g)));
+    v -= (0.00021 * +ct) * (Math.sin(lo));
+    var u = 1 - (0.03349 * (Math.cos(g)));
+    u -= 0.00014 * (Math.cos((2 * lo)));
+    u += 8E-05 * (Math.cos(lo));
+    var w = -0.0001 - (0.04129 * (Math.sin((2 * lo))));
+    w += 0.03211 * (Math.sin(g));
+    w += 0.00104 * (Math.sin(((2 * lo) - g)));
+    w -= 0.00035 * (Math.sin(((2 * lo) + g)));
+    w -= (8E-05 * +ct) * (Math.sin(g));
+    var s = +((w / (Math.sqrt((u - (v * v))))));
+    this.mSunPositionInSkyArr[0] = lo + (Math.atan(+((s / (Math.sqrt((1 - (s * s))))))));
+    s = +((v / (Math.sqrt(u))));
+    this.mSunPositionInSkyArr[1] = (Math.atan(+((s / (Math.sqrt((1 - (s * s))))))));
+  };
+
+  function SunTimes_CalculateSunRiseSetTimes$00 (lat, lon, date, /* ref */ riseTime, /* ref */ setTime) {
+    return $S00().CallVirtual("CalculateSunRiseSetTimes", null, this, 
+      lat['ToDouble'](), 
+      lon['ToDouble'](), 
+      date['MemberwiseClone'](), 
+      /* ref */ riseTime, 
+      /* ref */ setTime
+    );
+  };
+
+  function SunTimes_CalculateSunRiseSetTimes$01 (lat, lon, date, /* ref */ riseTime, /* ref */ setTime) {
+    var obj = null;
+    var flag = new JSIL.BoxedVariable(false);
+    try {
+      $T0B()['Enter'](obj = this.mLock, /* ref */ flag);
+      var jd = +this['GetJulianDay'](date) - 2451545;
+      if (!(((this['Sign'](-1) | 0) !== (this['Sign'](lon) | 0)) || (-1 === 0))) {
+        var result = false;
+      } else {
+        lon = +((+lon / 360));
+        var ct = +((jd / 36525)) + 1;
+        var t0 = +this['LocalSiderealTimeForTimeZone'](lon, jd, +((-1 / 24)));
+        jd += +((-1 / 24));
+        this['CalculateSunPosition'](jd, ct);
+        var ra0 = +this.mSunPositionInSkyArr[0];
+        var dec0 = +this.mSunPositionInSkyArr[1];
+        jd += 1;
+        this['CalculateSunPosition'](jd, ct);
+        var ra = +this.mSunPositionInSkyArr[0];
+        if (ra < ra0) {
+          ra += 6.2831853071795862;
+        }
+        this.mIsSunrise = false;
+        this.mIsSunset = false;
+        this.mRightAscentionArr[0] = ra0;
+        this.mDecensionArr[0] = dec0;
+
+        for (var i = 0; i < 24; i = ((i + 1) | 0)) {
+          this.mRightAscentionArr[2] = ra0 + +(((+(i + 1) * (ra - ra0)) / 24));
+          this.mDecensionArr[2] = dec0 + +(((+(i + 1) * (+this.mSunPositionInSkyArr[1] - dec0)) / 24));
+          this.mVHzArr[2] = +this['TestHour'](i, -1, t0, lat);
+          this.mRightAscentionArr[0] = +this.mRightAscentionArr[2];
+          this.mDecensionArr[0] = +this.mDecensionArr[2];
+          this.mVHzArr[0] = +this.mVHzArr[2];
+        }
+        riseTime.set($S01().Construct(date['get_Year'](), date['get_Month'](), date['get_Day'](), this.mRiseTimeArr[0], this.mRiseTimeArr[1], 0));
+        setTime.set($S01().Construct(date['get_Year'](), date['get_Month'](), date['get_Day'](), this.mSetTimeArr[0], this.mSetTimeArr[1], 0));
+        if (!(this.mIsSunrise || this.mIsSunset)) {
+          if (+this.mVHzArr[2] < 0) {
+          }
+        } else if (this.mIsSunrise) {
+          if (!this.mIsSunset) {
+          }
+        }
+        result = true;
+      }
+    } finally {
+      if (flag.get()) {
+        $T0B()['Exit'](obj);
+      }
+    }
+    return result;
+  };
+
+  function SunTimes_get_Instance () {
+    return $thisType.mInstance;
+  };
+
+  function SunTimes_GetJulianDay (date) {
+    var month = (date['get_Month']() | 0);
+    var day = (date['get_Day']() | 0);
+    var year = (date['get_Year']() | 0);
+    var gregorian = year >= 1583;
+    if (!((month !== 1) && (month !== 2))) {
+      year = ((year - 1) | 0);
+      month = ((month + 12) | 0);
+    }
+    var a = (Math.floor(+((+year / 100))));
+    if (gregorian) {
+      var b = (2 - a) + (Math.floor(+((a / 4))));
+    } else {
+      b = 0;
+    }
+    return (((((Math.floor((365.25 * +(year + 4716)))) + (Math.floor((30.6001 * +(month + 1))))) + +day) + b) - 1524.5);
+  };
+
+  function SunTimes_LocalSiderealTimeForTimeZone (lon, jd, z) {
+    var s = ((24110.5 + +(((8640184.813 * +jd) / 36525))) + (86636.6 * +z)) + (86400 * +lon);
+    s = +((s / 86400));
+    s -= (Math.floor(s));
+    return ((s * 360) * 0.017453292519943295);
+  };
+
+  function SunTimes_Sign (value) {
+    if (+value > 0) {
+      var rv = 1;
+    } else if (+value < 0) {
+      rv = -1;
+    } else {
+      rv = 0;
+    }
+    return rv;
+  };
+
+  function SunTimes_TestHour (k, zone, t0, lat) {
+    var ha = JSIL.Array.New($T04(), [((+t0 - +this.mRightAscentionArr[0]) + (+k * 0.26251616834300473)), 0, (((+t0 - +this.mRightAscentionArr[2]) + (+k * 0.26251616834300473)) + 0.26251616834300473)]);
+    ha[1] = +(((+ha[2] + +ha[0]) / 2));
+    this.mDecensionArr[1] = +(((+this.mDecensionArr[2] + +this.mDecensionArr[0]) / 2));
+    var s = (Math.sin((+lat * 0.017453292519943295)));
+    var c = (Math.cos((+lat * 0.017453292519943295)));
+    if ((k | 0) <= 0) {
+      this.mVHzArr[0] = ((s * (Math.sin(this.mDecensionArr[0]))) + ((c * (Math.cos(this.mDecensionArr[0]))) * (Math.cos(ha[0])))) - (Math.cos(1.5853349194640094));
+    }
+    this.mVHzArr[2] = ((s * (Math.sin(this.mDecensionArr[2]))) + ((c * (Math.cos(this.mDecensionArr[2]))) * (Math.cos(ha[2])))) - (Math.cos(1.5853349194640094));
+    if ((this['Sign'](this.mVHzArr[0]) | 0) === (this['Sign'](this.mVHzArr[2]) | 0)) {
+      var result = +this.mVHzArr[2];
+    } else {
+      this.mVHzArr[1] = ((s * (Math.sin(this.mDecensionArr[1]))) + ((c * (Math.cos(this.mDecensionArr[1]))) * (Math.cos(ha[1])))) - (Math.cos(1.5853349194640094));
+      var d = ((((-3 * +this.mVHzArr[0]) + (4 * +this.mVHzArr[1])) - +this.mVHzArr[2]) * (((-3 * +this.mVHzArr[0]) + (4 * +this.mVHzArr[1])) - +this.mVHzArr[2])) - ((4 * (((2 * +this.mVHzArr[0]) - (4 * +this.mVHzArr[1])) + (2 * +this.mVHzArr[2]))) * +this.mVHzArr[0]);
+      if (d < 0) {
+        result = +this.mVHzArr[2];
+      } else {
+        d = (Math.sqrt(d));
+        var e = +(((-(((-3 * +this.mVHzArr[0]) + (4 * +this.mVHzArr[1])) - +this.mVHzArr[2]) + d) / (2 * (((2 * +this.mVHzArr[0]) - (4 * +this.mVHzArr[1])) + (2 * +this.mVHzArr[2])))));
+        if (!((e <= 1) && (e >= 0))) {
+          e = +(((-(((-3 * +this.mVHzArr[0]) + (4 * +this.mVHzArr[1])) - +this.mVHzArr[2]) - d) / (2 * (((2 * +this.mVHzArr[0]) - (4 * +this.mVHzArr[1])) + (2 * +this.mVHzArr[2])))));
+        }
+        var time = (+k + e) + 0.0083333333333333332;
+        var hr = ((Math.floor(time)) | 0);
+        var min = ((Math.floor(((time - +hr) * 60))) | 0);
+        var hz = +ha[0] + (e * (+ha[2] - +ha[0]));
+        var nz = -(Math.cos(this.mDecensionArr[1])) * (Math.sin(hz));
+        var dz = (c * (Math.sin(this.mDecensionArr[1]))) - ((s * (Math.cos(this.mDecensionArr[1]))) * (Math.cos(hz)));
+        var az = +(((Math.atan2(nz, dz)) / 0.017453292519943295));
+        if (az < 0) {
+          az += 360;
+        }
+        if (!((+this.mVHzArr[0] >= 0) || (+this.mVHzArr[2] <= 0))) {
+          this.mRiseTimeArr[0] = hr;
+          this.mRiseTimeArr[1] = min;
+          this.mRizeAzimuth = az;
+          this.mIsSunrise = true;
+        }
+        if (!((+this.mVHzArr[0] <= 0) || (+this.mVHzArr[2] >= 0))) {
+          this.mSetTimeArr[0] = hr;
+          this.mSetTimeArr[1] = min;
+          this.mSetAzimuth = az;
+          this.mIsSunset = true;
+        }
+        result = +this.mVHzArr[2];
+      }
+    }
+    return result;
+  };
+
+  JSIL.MakeType({
+      BaseType: $asm_mscorlib.TypeRef("System.Object"), 
+      Name: "SunTimes", 
+      IsPublic: false, 
+      IsReferenceType: true, 
+      MaximumConstructorArguments: 0, 
+    }, function ($interfaceBuilder) {
+    $ = $interfaceBuilder;
+
+    $.Method({Static:false, Public:false}, ".ctor", 
+      JSIL.MethodSignature.Void, 
+      SunTimes__ctor
+    );
+
+    $.Method({Static:false, Public:false}, "CalculateSunPosition", 
+      new JSIL.MethodSignature(null, [$.Double, $.Double]), 
+      SunTimes_CalculateSunPosition
+    );
+
+    $.Method({Static:false, Public:true }, "CalculateSunRiseSetTimes", 
+      new JSIL.MethodSignature($.Boolean, [
+          $asm_senior_clock_html5.TypeRef("SunTimes+LatitudeCoords"), $asm_senior_clock_html5.TypeRef("SunTimes+LongitudeCoords"), 
+          $asm_mscorlib.TypeRef("System.DateTime"), $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")]), 
+          $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")])
+        ]), 
+      SunTimes_CalculateSunRiseSetTimes$00
+    );
+
+    $.Method({Static:false, Public:true }, "CalculateSunRiseSetTimes", 
+      new JSIL.MethodSignature($.Boolean, [
+          $.Double, $.Double, 
+          $asm_mscorlib.TypeRef("System.DateTime"), $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")]), 
+          $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")])
+        ]), 
+      SunTimes_CalculateSunRiseSetTimes$01
+    );
+
+    $.Method({Static:true , Public:true }, "get_Instance", 
+      JSIL.MethodSignature.Return($.Type), 
+      SunTimes_get_Instance
+    );
+
+    $.Method({Static:false, Public:false}, "GetJulianDay", 
+      new JSIL.MethodSignature($.Double, [$asm_mscorlib.TypeRef("System.DateTime")]), 
+      SunTimes_GetJulianDay
+    );
+
+    $.Method({Static:false, Public:false}, "LocalSiderealTimeForTimeZone", 
+      new JSIL.MethodSignature($.Double, [
+          $.Double, $.Double, 
+          $.Double
+        ]), 
+      SunTimes_LocalSiderealTimeForTimeZone
+    );
+
+    $.Method({Static:false, Public:false}, "Sign", 
+      new JSIL.MethodSignature($.Int32, [$.Double]), 
+      SunTimes_Sign
+    );
+
+    $.Method({Static:false, Public:false}, "TestHour", 
+      new JSIL.MethodSignature($.Double, [
+          $.Int32, $.Double, 
+          $.Double, $.Double
+        ]), 
+      SunTimes_TestHour
+    );
+
+    $['Constant']({Static:true , Public:false}, "mDR", 0.017453292519943295); 
+    $['Constant']({Static:true , Public:false}, "mK1", 0.26251616834300473); 
+    $['Field']({Static:false, Public:false}, "mLock", $.Object); 
+    $['Field']({Static:false, Public:false}, "mRiseTimeArr", $jsilcore.TypeRef("System.Array", [$.Int32])); 
+    $['Field']({Static:false, Public:false}, "mSetTimeArr", $jsilcore.TypeRef("System.Array", [$.Int32])); 
+    $['Field']({Static:false, Public:false}, "mRizeAzimuth", $.Double); 
+    $['Field']({Static:false, Public:false}, "mSetAzimuth", $.Double); 
+    $['Field']({Static:false, Public:false}, "mSunPositionInSkyArr", $jsilcore.TypeRef("System.Array", [$.Double])); 
+    $['Field']({Static:false, Public:false}, "mRightAscentionArr", $jsilcore.TypeRef("System.Array", [$.Double])); 
+    $['Field']({Static:false, Public:false}, "mDecensionArr", $jsilcore.TypeRef("System.Array", [$.Double])); 
+    $['Field']({Static:false, Public:false}, "mVHzArr", $jsilcore.TypeRef("System.Array", [$.Double])); 
+    $['Field']({Static:false, Public:false}, "mIsSunrise", $.Boolean); 
+    $['Field']({Static:false, Public:false}, "mIsSunset", $.Boolean); 
+    $['Field']({Static:true , Public:false, ReadOnly:true }, "mInstance", $.Type); 
+    function SunTimes__cctor () {
+      $thisType.mInstance = new $thisType();
+    };
+
+
+    $.Method({Static:true , Public:false}, ".cctor", 
+      JSIL.MethodSignature.Void, 
+      SunTimes__cctor
+    );
+
+    $.Property({Static:true , Public:true }, "Instance", $.Type);
+
+    return function (newThisType) { $thisType = newThisType; }; 
+  });
+
+})();
+
+/* class SunTimes+Coords */ 
+
+(function Coords$Members () {
+  var $, $thisType;
+  function Coords__ctor () {
+    this.mDegrees = 0;
+    this.mMinutes = 0;
+    this.mSeconds = 0;
+  };
+
+  function Coords_ToDouble () {
+    return (+(this['Sign']()) * ((+(this.mDegrees) + +((+(this.mMinutes) / 60))) + +((+(this.mSeconds) / 3600))));
+  };
+
+  JSIL.MakeType({
+      BaseType: $asm_mscorlib.TypeRef("System.Object"), 
+      Name: "SunTimes+Coords", 
+      IsPublic: false, 
+      IsReferenceType: true, 
+      MaximumConstructorArguments: 0, 
+    }, function ($interfaceBuilder) {
+    $ = $interfaceBuilder;
+
+    $.Method({Static:false, Public:false}, ".ctor", 
+      JSIL.MethodSignature.Void, 
+      Coords__ctor
+    );
+
+    $.Method({Static:false, Public:true }, "ToDouble", 
+      JSIL.MethodSignature.Return($.Double), 
+      Coords_ToDouble
+    );
+
+    $['Field']({Static:false, Public:false}, "mDegrees", $.Int32); 
+    $['Field']({Static:false, Public:false}, "mMinutes", $.Int32); 
+    $['Field']({Static:false, Public:false}, "mSeconds", $.Int32); 
+    return function (newThisType) { $thisType = newThisType; }; 
+  });
+
+})();
+
+/* class SunTimes+LatitudeCoords */ 
+
+(function LatitudeCoords$Members () {
+  var $, $thisType;
+  var $T00 = function () {
+    return ($T00 = JSIL.Memoize($asm_mscorlib.System.Int32)) ();
+  };
+  var $T01 = function () {
+    return ($T01 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LatitudeCoords_Direction)) ();
+  };
+  var $T02 = function () {
+    return ($T02 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_Coords)) ();
+  };
+
+  function LatitudeCoords__ctor (degrees, minutes, seconds, direction) {
+    this.mDirection = $T01().North;
+    $T02().prototype['_ctor'].call(this);
+    this.mDegrees = (degrees | 0);
+    this.mMinutes = (minutes | 0);
+    this.mSeconds = (seconds | 0);
+    this.mDirection = direction;
+  };
+
+  function LatitudeCoords_Sign () {
+    return (
+      (((this.mDirection)['valueOf']() | 0) === 0)
+         ? 1
+         : -1)
+    ;
+  };
+
+  JSIL.MakeType({
+      BaseType: $asm_senior_clock_html5.TypeRef("SunTimes+Coords"), 
+      Name: "SunTimes+LatitudeCoords", 
+      IsPublic: false, 
+      IsReferenceType: true, 
+      MaximumConstructorArguments: 4, 
+    }, function ($interfaceBuilder) {
+    $ = $interfaceBuilder;
+
+    $.Method({Static:false, Public:true }, ".ctor", 
+      new JSIL.MethodSignature(null, [
+          $.Int32, $.Int32, 
+          $.Int32, $asm_senior_clock_html5.TypeRef("SunTimes+LatitudeCoords+Direction")
+        ]), 
+      LatitudeCoords__ctor
+    );
+
+    $.Method({Static:false, Public:false, Virtual:true }, "Sign", 
+      JSIL.MethodSignature.Return($.Int32), 
+      LatitudeCoords_Sign
+    );
+
+    $['Field']({Static:false, Public:false}, "mDirection", $asm_senior_clock_html5.TypeRef("SunTimes+LatitudeCoords+Direction")); 
+    return function (newThisType) { $thisType = newThisType; }; 
+  });
+
+})();
+
+/* enum SunTimes+LatitudeCoords+Direction */ 
+
+JSIL.MakeEnum(
+  {
+    FullName: "SunTimes+LatitudeCoords+Direction", 
+    BaseType: $asm_mscorlib.TypeRef("System.Int32"), 
+    IsPublic: false, 
+    IsFlags: false, 
+  }, 
+  {
+    North: 0, 
+    South: 1, 
+  }
+);
+
+/* class SunTimes+LongitudeCoords */ 
+
+(function LongitudeCoords$Members () {
+  var $, $thisType;
+  var $T00 = function () {
+    return ($T00 = JSIL.Memoize($asm_mscorlib.System.Int32)) ();
+  };
+  var $T01 = function () {
+    return ($T01 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LongitudeCoords_Direction)) ();
+  };
+  var $T02 = function () {
+    return ($T02 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_Coords)) ();
+  };
+
+  function LongitudeCoords__ctor (degrees, minutes, seconds, direction) {
+    this.mDirection = $T01().East;
+    $T02().prototype['_ctor'].call(this);
+    this.mDegrees = (degrees | 0);
+    this.mMinutes = (minutes | 0);
+    this.mSeconds = (seconds | 0);
+    this.mDirection = direction;
+  };
+
+  function LongitudeCoords_Sign () {
+    return (
+      (((this.mDirection)['valueOf']() | 0) === 0)
+         ? 1
+         : -1)
+    ;
+  };
+
+  JSIL.MakeType({
+      BaseType: $asm_senior_clock_html5.TypeRef("SunTimes+Coords"), 
+      Name: "SunTimes+LongitudeCoords", 
+      IsPublic: false, 
+      IsReferenceType: true, 
+      MaximumConstructorArguments: 4, 
+    }, function ($interfaceBuilder) {
+    $ = $interfaceBuilder;
+
+    $.Method({Static:false, Public:true }, ".ctor", 
+      new JSIL.MethodSignature(null, [
+          $.Int32, $.Int32, 
+          $.Int32, $asm_senior_clock_html5.TypeRef("SunTimes+LongitudeCoords+Direction")
+        ]), 
+      LongitudeCoords__ctor
+    );
+
+    $.Method({Static:false, Public:false, Virtual:true }, "Sign", 
+      JSIL.MethodSignature.Return($.Int32), 
+      LongitudeCoords_Sign
+    );
+
+    $['Field']({Static:false, Public:false}, "mDirection", $asm_senior_clock_html5.TypeRef("SunTimes+LongitudeCoords+Direction")); 
+    return function (newThisType) { $thisType = newThisType; }; 
+  });
+
+})();
+
+/* enum SunTimes+LongitudeCoords+Direction */ 
+
+JSIL.MakeEnum(
+  {
+    FullName: "SunTimes+LongitudeCoords+Direction", 
+    BaseType: $asm_mscorlib.TypeRef("System.Int32"), 
+    IsPublic: false, 
+    IsFlags: false, 
+  }, 
+  {
+    East: 0, 
+    West: 1, 
+  }
+);
 
 /* class senior_clock_html5.MainModel */ 
 
@@ -114,37 +657,55 @@ JSIL.DeclareNamespace("senior_clock_html5");
     return ($T0D = JSIL.Memoize($asm_mscorlib.System.Func$b2.Of($asm_mscorlib.System.Int32, $asm_mscorlib.System.Boolean))) ();
   };
   var $T0E = function () {
-    return ($T0E = JSIL.Memoize($asm_CSharpXamlForHtml5_System_dll.System.ComponentModel.PropertyChangedEventArgs)) ();
+    return ($T0E = JSIL.Memoize($asm_senior_clock_html5.SunTimes)) ();
   };
   var $T0F = function () {
-    return ($T0F = JSIL.Memoize($asm_mscorlib.System.IO.MemoryStream)) ();
+    return ($T0F = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LatitudeCoords)) ();
   };
   var $T10 = function () {
-    return ($T10 = JSIL.Memoize($asm_mscorlib.System.Text.Encoding)) ();
+    return ($T10 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LatitudeCoords_Direction)) ();
   };
   var $T11 = function () {
-    return ($T11 = JSIL.Memoize($asm_CSharpXamlForHtml5_System_Xml_dll.System.Xml.XmlReader)) ();
+    return ($T11 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LongitudeCoords)) ();
   };
   var $T12 = function () {
-    return ($T12 = JSIL.Memoize($asm_mscorlib.System.Collections.Generic.List$b1.Of($asm_mscorlib.System.String))) ();
+    return ($T12 = JSIL.Memoize($asm_senior_clock_html5.SunTimes_LongitudeCoords_Direction)) ();
   };
   var $T13 = function () {
-    return ($T13 = JSIL.Memoize($asm_CSharpXamlForHtml5_System_Xml_dll.System.Xml.XmlNodeType)) ();
+    return ($T13 = JSIL.Memoize($asm_mscorlib.System.Boolean)) ();
   };
   var $T14 = function () {
-    return ($T14 = JSIL.Memoize($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass5)) ();
+    return ($T14 = JSIL.Memoize($asm_CSharpXamlForHtml5_System_dll.System.ComponentModel.PropertyChangedEventArgs)) ();
   };
   var $T15 = function () {
-    return ($T15 = JSIL.Memoize($asm_mscorlib.System.Collections.Generic.List$b1)) ();
+    return ($T15 = JSIL.Memoize($asm_mscorlib.System.IO.MemoryStream)) ();
   };
   var $T16 = function () {
-    return ($T16 = JSIL.Memoize($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass2)) ();
+    return ($T16 = JSIL.Memoize($asm_mscorlib.System.Text.Encoding)) ();
   };
   var $T17 = function () {
-    return ($T17 = JSIL.Memoize($asm_mscorlib.System.Action$b1.Of($asm_mscorlib.System.String))) ();
+    return ($T17 = JSIL.Memoize($asm_CSharpXamlForHtml5_System_Xml_dll.System.Xml.XmlReader)) ();
   };
   var $T18 = function () {
-    return ($T18 = JSIL.Memoize($asm_mscorlib.System.Exception)) ();
+    return ($T18 = JSIL.Memoize($asm_mscorlib.System.Collections.Generic.List$b1.Of($asm_mscorlib.System.String))) ();
+  };
+  var $T19 = function () {
+    return ($T19 = JSIL.Memoize($asm_CSharpXamlForHtml5_System_Xml_dll.System.Xml.XmlNodeType)) ();
+  };
+  var $T1A = function () {
+    return ($T1A = JSIL.Memoize($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass5)) ();
+  };
+  var $T1B = function () {
+    return ($T1B = JSIL.Memoize($asm_mscorlib.System.Collections.Generic.List$b1)) ();
+  };
+  var $T1C = function () {
+    return ($T1C = JSIL.Memoize($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass2)) ();
+  };
+  var $T1D = function () {
+    return ($T1D = JSIL.Memoize($asm_mscorlib.System.Action$b1.Of($asm_mscorlib.System.String))) ();
+  };
+  var $T1E = function () {
+    return ($T1E = JSIL.Memoize($asm_mscorlib.System.Exception)) ();
   };
   var $S00 = function () {
     return ($S00 = JSIL.Memoize(new JSIL.ConstructorSignature($asm_mscorlib.TypeRef("System.TimeSpan"), [
@@ -160,25 +721,32 @@ JSIL.DeclareNamespace("senior_clock_html5");
     return ($S02 = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.Collections.Generic.IEnumerable`1", ["!!0"]), [$asm_mscorlib.TypeRef("System.Collections.Generic.IEnumerable`1", ["!!0"]), $asm_mscorlib.TypeRef("System.Func`2", ["!!0", $asm_mscorlib.TypeRef("System.Boolean")])], ["TSource"]))) ();
   };
   var $S03 = function () {
-    return ($S03 = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.TimeSpan"), [$asm_mscorlib.TypeRef("System.DateTime"), $asm_mscorlib.TypeRef("System.DateTime")]))) ();
+    return ($S03 = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.Boolean"), [
+        $asm_senior_clock_html5.TypeRef("SunTimes+LatitudeCoords"), $asm_senior_clock_html5.TypeRef("SunTimes+LongitudeCoords"), 
+        $asm_mscorlib.TypeRef("System.DateTime"), $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")]), 
+        $jsilcore.TypeRef("JSIL.Reference", [$asm_mscorlib.TypeRef("System.DateTime")])
+      ]))) ();
   };
   var $S04 = function () {
-    return ($S04 = JSIL.Memoize(new JSIL.ConstructorSignature($asm_mscorlib.TypeRef("System.IO.MemoryStream"), [$jsilcore.TypeRef("System.Array", [$asm_mscorlib.TypeRef("System.Byte")])]))) ();
+    return ($S04 = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.TimeSpan"), [$asm_mscorlib.TypeRef("System.DateTime"), $asm_mscorlib.TypeRef("System.DateTime")]))) ();
   };
   var $S05 = function () {
-    return ($S05 = JSIL.Memoize(new JSIL.MethodSignature($jsilcore.TypeRef("System.Array", [$asm_mscorlib.TypeRef("System.Byte")]), [$asm_mscorlib.TypeRef("System.String")]))) ();
+    return ($S05 = JSIL.Memoize(new JSIL.ConstructorSignature($asm_mscorlib.TypeRef("System.IO.MemoryStream"), [$jsilcore.TypeRef("System.Array", [$asm_mscorlib.TypeRef("System.Byte")])]))) ();
   };
   var $S06 = function () {
-    return ($S06 = JSIL.Memoize(new JSIL.MethodSignature($asm_CSharpXamlForHtml5_System_Xml_dll.TypeRef("System.Xml.XmlReader"), [$asm_mscorlib.TypeRef("System.IO.Stream")]))) ();
+    return ($S06 = JSIL.Memoize(new JSIL.MethodSignature($jsilcore.TypeRef("System.Array", [$asm_mscorlib.TypeRef("System.Byte")]), [$asm_mscorlib.TypeRef("System.String")]))) ();
   };
   var $S07 = function () {
-    return ($S07 = JSIL.Memoize(new JSIL.ConstructorSignature($asm_mscorlib.TypeRef("System.Collections.Generic.List`1", [$asm_mscorlib.TypeRef("System.String")]), null))) ();
+    return ($S07 = JSIL.Memoize(new JSIL.MethodSignature($asm_CSharpXamlForHtml5_System_Xml_dll.TypeRef("System.Xml.XmlReader"), [$asm_mscorlib.TypeRef("System.IO.Stream")]))) ();
   };
   var $S08 = function () {
-    return ($S08 = JSIL.Memoize(new JSIL.MethodSignature(null, [$asm_mscorlib.TypeRef("System.String")]))) ();
+    return ($S08 = JSIL.Memoize(new JSIL.ConstructorSignature($asm_mscorlib.TypeRef("System.Collections.Generic.List`1", [$asm_mscorlib.TypeRef("System.String")]), null))) ();
   };
   var $S09 = function () {
-    return ($S09 = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.String"), [$asm_mscorlib.TypeRef("System.String")]))) ();
+    return ($S09 = JSIL.Memoize(new JSIL.MethodSignature(null, [$asm_mscorlib.TypeRef("System.String")]))) ();
+  };
+  var $S0A = function () {
+    return ($S0A = JSIL.Memoize(new JSIL.MethodSignature($asm_mscorlib.TypeRef("System.String"), [$asm_mscorlib.TypeRef("System.String")]))) ();
   };
 
   function MainModel__ctor () {
@@ -215,6 +783,8 @@ JSIL.DeclareNamespace("senior_clock_html5");
   };
 
   function MainModel_DispatcherTimer_Tick (sender, e) {
+    var sunrise = new JSIL.BoxedVariable(null);
+    var sunset = new JSIL.BoxedVariable(null);
 
     var $label0 = 0;
   $labelgroup0: 
@@ -238,7 +808,24 @@ JSIL.DeclareNamespace("senior_clock_html5");
           this['set_PeriodOffDay'](this.dayPartNames[ind]);
           this['set_BackgroundColor'](this.dayPartBackGroupdColors[ind]);
           this['set_TextColor'](this.dayPartTextColors[ind]);
-          this['set_Warning'](this.dayPartWarnings[ind]);
+          sunrise.set($T04()['get_Now']()['MemberwiseClone']());
+          sunset.set($T04()['get_Now']()['MemberwiseClone']());
+          $S03().CallVirtual("CalculateSunRiseSetTimes", null, $T0E()['get_Instance'](), 
+            new ($T0F())(49, 21, 30, $T10().North), 
+            new ($T11())(7, 7, 0, $T12().East), 
+            $closure0.now['MemberwiseClone'](), 
+            /* ref */ sunrise, 
+            /* ref */ sunset
+          );
+          var isDark = $T03()['op_LessThan'](
+            ($T04()['op_Addition'](sunset.get()['MemberwiseClone'](), $T03()['FromHours'](1)['MemberwiseClone']()))['get_TimeOfDay']()['MemberwiseClone'](), 
+            ($closure0.now)['get_TimeOfDay']()['MemberwiseClone']()
+          );
+          var warningBuf = this.dayPartWarnings[ind];
+          if (!(!isDark || !$T01()['IsNullOrEmpty'](warningBuf))) {
+            warningBuf = "\u041d\u0430 \u0443\u043b\u0438\u0446\u0435 \u0442\u0435\u043c\u043d\u043e!\n\u0418\u0437 \u0434\u043e\u043c\u0430 \u043d\u0435 \u0432\u044b\u0445\u043e\u0434\u0438\u0442\u044c!\n\u0414\u0432\u0435\u0440\u044c \u043d\u0430 \u0443\u043b\u0438\u0446\u0443 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0442\u044c!";
+          }
+          this['set_Warning'](warningBuf);
           this['set_WarningColor']("#FFFF0000");
           var text = (($closure0.now)['get_Date']()['MemberwiseClone']())['ToShortDateString']();
           if (text !== null) {
@@ -271,8 +858,8 @@ JSIL.DeclareNamespace("senior_clock_html5");
 
       }
     }
-    /* Original label IL_258 */ 
-    if (!(!$T04()['op_Equality'](this.lastWeatherRequestDateTime['MemberwiseClone'](), $T04().MinValue['MemberwiseClone']()) && ((($S03().CallStatic($T04(), "op_Subtraction", null, $closure0.now, this.lastWeatherRequestDateTime))['get_Minutes']() | 0) <= 9))) {
+    /* Original label IL_2F0 */ 
+    if (!(!$T04()['op_Equality'](this.lastWeatherRequestDateTime['MemberwiseClone'](), $T04().MinValue['MemberwiseClone']()) && ((($S04().CallStatic($T04(), "op_Subtraction", null, $closure0.now, this.lastWeatherRequestDateTime))['get_Minutes']() | 0) <= 9))) {
       this.lastWeatherRequestDateTime = $closure0.now['MemberwiseClone']();
       this['RequestWether']();
     }
@@ -333,26 +920,26 @@ JSIL.DeclareNamespace("senior_clock_html5");
   function MainModel_OnPropertyChanged (propertyName) {
     var handler = this.PropertyChanged;
     if (handler !== null) {
-      handler(this, new ($T0E())(propertyName));
+      handler(this, new ($T14())(propertyName));
     }
   };
 
   function MainModel_RaisePropertyCnahged (property) {
     if (this.PropertyChanged !== null) {
-      this.PropertyChanged(this, new ($T0E())(property));
+      this.PropertyChanged(this, new ($T14())(property));
     }
   };
 
   function MainModel_ReceiveAkkuWether (xmlResponce) {
     this['set_WetterXml'](xmlResponce);
-    var memoryStream = $S04().Construct($S05().CallVirtual("GetBytes", null, $T10()['get_UTF8'](), xmlResponce));
-    var reader = $S06().CallStatic($T11(), "Create", null, memoryStream);
-    var weatherStr = $S07().Construct();
+    var memoryStream = $S05().Construct($S06().CallVirtual("GetBytes", null, $T16()['get_UTF8'](), xmlResponce));
+    var reader = $S07().CallStatic($T17(), "Create", null, memoryStream);
+    var weatherStr = $S08().Construct();
 
   $loop0: 
     while (reader['Read']()) {
-      if (reader['get_NodeType']() === $T13().Element) {
-        var $closure0 = new ($T14())();
+      if (reader['get_NodeType']() === $T19().Element) {
+        var $closure0 = new ($T1A())();
         var name = reader['get_Name']();
         if (name !== null) {
           if (!(name == "currentconditions")) {
@@ -361,21 +948,21 @@ JSIL.DeclareNamespace("senior_clock_html5");
                 if (!(name == "weathericon")) {
                   if (name == "windspeed") {
                     $closure0.wspeed = ($T00()['Parse'](reader['ReadString']()) | 0);
-                    var ind = ($S01().CallStatic($T0B(), "Count$b1", [$asm_mscorlib.System.Int32], $S02().CallStatic($T0B(), "Where$b1", [$asm_mscorlib.System.Int32], $T0C().$Cast(this.windlimits), $T0D()['New']($closure0, $T14().prototype['$lReceiveAkkuWether$gb__4'], function () { return JSIL.GetMethodInfo($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass5, "$lReceiveAkkuWether$gb__4", new JSIL.MethodSignature($asm_mscorlib.System.Boolean, [$asm_mscorlib.System.Int32]), false); }))) | 0);
-                    $S08().CallVirtual("Add", null, weatherStr, this.windNames[ind]);
+                    var ind = ($S01().CallStatic($T0B(), "Count$b1", [$asm_mscorlib.System.Int32], $S02().CallStatic($T0B(), "Where$b1", [$asm_mscorlib.System.Int32], $T0C().$Cast(this.windlimits), $T0D()['New']($closure0, $T1A().prototype['$lReceiveAkkuWether$gb__4'], function () { return JSIL.GetMethodInfo($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass5, "$lReceiveAkkuWether$gb__4", new JSIL.MethodSignature($asm_mscorlib.System.Boolean, [$asm_mscorlib.System.Int32]), false); }))) | 0);
+                    $S09().CallVirtual("Add", null, weatherStr, this.windNames[ind]);
                   }
                 } else {
                   this['set_IconPath']($T01()['Format']("/senior_clock_html5;component/icons/{0}-s.png", reader['ReadString']()));
                 }
               } else {
-                $S08().CallVirtual("Add", null, weatherStr, JSIL.ConcatString("\u043e\u0431\u043b\u0430\u0447\u043d\u043e\u0441\u0442\u044c: ", reader['ReadString']()));
+                $S09().CallVirtual("Add", null, weatherStr, JSIL.ConcatString("\u043e\u0431\u043b\u0430\u0447\u043d\u043e\u0441\u0442\u044c: ", reader['ReadString']()));
               }
             } else {
-              $S08().CallVirtual("Add", null, weatherStr, ("\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430: " + System.String.Replace(reader['ReadString'](), ".", ",") + "\xba"));
+              $S09().CallVirtual("Add", null, weatherStr, ("\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430: " + System.String.Replace(reader['ReadString'](), ".", ",") + "\xba"));
             }
           }
         }
-      } else if (!((reader['get_NodeType']() !== $T13().EndElement) || !(reader['get_Name']() == "currentconditions"))) {
+      } else if (!((reader['get_NodeType']() !== $T19().EndElement) || !(reader['get_Name']() == "currentconditions"))) {
         break $loop0;
       }
     }
@@ -383,14 +970,14 @@ JSIL.DeclareNamespace("senior_clock_html5");
   };
 
   function MainModel_ReceiveWether (xmlResponce) {
-    var memoryStream = $S04().Construct($S05().CallVirtual("GetBytes", null, $T10()['get_UTF8'](), xmlResponce));
+    var memoryStream = $S05().Construct($S06().CallVirtual("GetBytes", null, $T16()['get_UTF8'](), xmlResponce));
 
-    for (var reader = $S06().CallStatic($T11(), "Create", null, memoryStream); reader['Read'](); ) {
-      if (reader['get_NodeType']() === $T13().Element) {
+    for (var reader = $S07().CallStatic($T17(), "Create", null, memoryStream); reader['Read'](); ) {
+      if (reader['get_NodeType']() === $T19().Element) {
         var name = reader['get_Name']();
         if (name !== null) {
           if (name == "temperature") {
-            this['set_WetterText'](JSIL.ConcatString("\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430: ", System.String.Replace($S09().CallVirtual("GetAttribute", null, reader, "value"), ".", ",")));
+            this['set_WetterText'](JSIL.ConcatString("\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430: ", System.String.Replace($S0A().CallVirtual("GetAttribute", null, reader, "value"), ".", ",")));
           }
         }
       }
@@ -399,14 +986,14 @@ JSIL.DeclareNamespace("senior_clock_html5");
 
   function MainModel_ReceiveWundeground (xmlResponce) {
     this['set_WetterXml'](xmlResponce);
-    var memoryStream = $S04().Construct($S05().CallVirtual("GetBytes", null, $T10()['get_UTF8'](), xmlResponce));
-    var reader = $S06().CallStatic($T11(), "Create", null, memoryStream);
-    var weatherStr = $S07().Construct();
+    var memoryStream = $S05().Construct($S06().CallVirtual("GetBytes", null, $T16()['get_UTF8'](), xmlResponce));
+    var reader = $S07().CallStatic($T17(), "Create", null, memoryStream);
+    var weatherStr = $S08().Construct();
 
   $loop0: 
     while (reader['Read']()) {
-      if (reader['get_NodeType']() === $T13().Element) {
-        var $closure0 = new ($T16())();
+      if (reader['get_NodeType']() === $T19().Element) {
+        var $closure0 = new ($T1C())();
         var name = reader['get_Name']();
         if (name !== null) {
           if (!(name == "current_observation")) {
@@ -415,21 +1002,21 @@ JSIL.DeclareNamespace("senior_clock_html5");
                 if (!(name == "icon_url")) {
                   if (name == "wind_gust_kph") {
                     $closure0.wspeed = ($T00()['Parse'](reader['ReadString']()) | 0);
-                    var ind = ($S01().CallStatic($T0B(), "Count$b1", [$asm_mscorlib.System.Int32], $S02().CallStatic($T0B(), "Where$b1", [$asm_mscorlib.System.Int32], $T0C().$Cast(this.windlimits), $T0D()['New']($closure0, $T16().prototype['$lReceiveWundeground$gb__1'], function () { return JSIL.GetMethodInfo($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass2, "$lReceiveWundeground$gb__1", new JSIL.MethodSignature($asm_mscorlib.System.Boolean, [$asm_mscorlib.System.Int32]), false); }))) | 0);
-                    $S08().CallVirtual("Add", null, weatherStr, this.windNames[ind]);
+                    var ind = ($S01().CallStatic($T0B(), "Count$b1", [$asm_mscorlib.System.Int32], $S02().CallStatic($T0B(), "Where$b1", [$asm_mscorlib.System.Int32], $T0C().$Cast(this.windlimits), $T0D()['New']($closure0, $T1C().prototype['$lReceiveWundeground$gb__1'], function () { return JSIL.GetMethodInfo($asm_senior_clock_html5.senior_clock_html5.MainModel_$l$gc__DisplayClass2, "$lReceiveWundeground$gb__1", new JSIL.MethodSignature($asm_mscorlib.System.Boolean, [$asm_mscorlib.System.Int32]), false); }))) | 0);
+                    $S09().CallVirtual("Add", null, weatherStr, this.windNames[ind]);
                   }
                 } else {
                   this['set_IconPath'](System.String.Replace(reader['ReadString'](), "/i/c/k/", "/i/c/c/"));
                 }
               } else {
-                $S08().CallVirtual("Add", null, weatherStr, reader['ReadString']());
+                $S09().CallVirtual("Add", null, weatherStr, reader['ReadString']());
               }
             } else {
               weatherStr['Insert'](0, ("\u0422\u0435\u043c\u043f\u0435\u0440\u0430\u0442\u0443\u0440\u0430: " + System.String.Replace(reader['ReadString'](), ".", ",") + "\xba"));
             }
           }
         }
-      } else if (!((reader['get_NodeType']() !== $T13().EndElement) || !(reader['get_Name']() == "current_observation"))) {
+      } else if (!((reader['get_NodeType']() !== $T19().EndElement) || !(reader['get_Name']() == "current_observation"))) {
         break $loop0;
       }
     }
@@ -447,7 +1034,7 @@ JSIL.DeclareNamespace("senior_clock_html5");
   };
 
   function MainModel_RequestWether () {
-    this['WebRequest']("https://api.wunderground.com/api/2073b5015213cc21/conditions/lang:RU/q/pws:ISAARLAN61.xml", $T17()['New'](this, $thisType.prototype['ReceiveWundeground'], function () { return JSIL.GetMethodInfo($thisType, "ReceiveWundeground", JSIL.MethodSignature.Action($.String), false); }), "<response>\r\n\t<version>0.1</version>\r\n\t<termsofService>http://www.wunderground.com/weather/api/d/terms.html</termsofService>\r\n\t<features>\r\n\t\t<feature>conditions</feature>\r\n\t</features>\r\n  <current_observation>\r\n\t\t<image>\r\n\t\t<url>http://icons.wxug.com/graphics/wu2/logo_130x80.png</url>\r\n\t\t<title>Weather Underground</title>\r\n\t\t<link>http://www.wunderground.com</link>\r\n\t\t</image>\r\n\t\t<display_location>\r\n\t\t<full>Landsweiler-Reden, Germany</full>\r\n\t\t<city>Landsweiler-Reden</city>\r\n\t\t<state>SL</state>\r\n\t\t<state_name>Germany</state_name>\r\n\t\t<country>DL</country>\r\n\t\t<country_iso3166>DE</country_iso3166>\r\n\t\t<zip>00000</zip>\r\n\t\t<magic>152</magic>\r\n\t\t<wmo>10706</wmo>\r\n\t\t<latitude>49.359680</latitude>\r\n\t\t<longitude>7.117084</longitude>\r\n\t\t<elevation>256.9</elevation>\r\n\t\t</display_location>\r\n\t\t<observation_location>\r\n\t\t<full>Kohlengrubstra\xdfe, Schiffweiler, </full>\r\n\t\t<city>Kohlengrubstra\xdfe, Schiffweiler</city>\r\n\t\t<state></state>\r\n\t\t<country>DE</country>\r\n\t\t<country_iso3166>DE</country_iso3166>\r\n\t\t<latitude>49.359680</latitude>\r\n\t\t<longitude>7.117084</longitude>\r\n\t\t<elevation>1017 ft</elevation>\r\n\t\t</observation_location>\r\n\t\t<estimated>\r\n\t\t</estimated>\r\n\t\t<station_id>ISCHIFFW6</station_id>\r\n\t\t<observation_time>Last Updated on September 17, 10:25 PM CEST</observation_time>\r\n\t\t<observation_time_rfc822>Sun, 17 Sep 2017 22:25:35 +0200</observation_time_rfc822>\r\n\t\t<observation_epoch>1505679935</observation_epoch>\r\n\t\t<local_time_rfc822>Sun, 17 Sep 2017 22:34:52 +0200</local_time_rfc822>\r\n\t\t<local_epoch>1505680492</local_epoch>\r\n\t\t<local_tz_short>CEST</local_tz_short>\r\n\t\t<local_tz_long>Europe/Berlin</local_tz_long>\r\n\t\t<local_tz_offset>+0200</local_tz_offset>\r\n\t\t<weather>Partly Cloudy</weather>\r\n\t\t<temperature_string>48.0 F (8.9 C)</temperature_string>\r\n\t\t<temp_f>48.0</temp_f>\r\n\t\t<temp_c>8.9</temp_c>\r\n\t\t<relative_humidity>96%</relative_humidity>\r\n\t\t<wind_string>Calm</wind_string>\r\n\t\t<wind_dir>North</wind_dir>\r\n\t\t<wind_degrees>-9999</wind_degrees>\r\n\t\t<wind_mph>-9999.0</wind_mph>\r\n\t\t<wind_gust_mph>0</wind_gust_mph>\r\n\t\t<wind_kph>-999.0</wind_kph>\r\n\t\t<wind_gust_kph>0</wind_gust_kph>\r\n\t\t<pressure_mb>1014</pressure_mb>\r\n\t\t<pressure_in>29.95</pressure_in>\r\n\t\t<pressure_trend>+</pressure_trend>\r\n\t\t\r\n\t\t<dewpoint_string>47 F (8 C)</dewpoint_string>\r\n\t\t<dewpoint_f>47</dewpoint_f>\r\n\t\t<dewpoint_c>8</dewpoint_c>\r\n\t\t\r\n\t\t\r\n\t\t<heat_index_string>NA</heat_index_string>\r\n\t\t<heat_index_f>NA</heat_index_f>\r\n\t\t<heat_index_c>NA</heat_index_c>\r\n\t\t\r\n\t\t\r\n\t\t<windchill_string>48 F (9 C)</windchill_string>\r\n\t\t<windchill_f>48</windchill_f>\r\n\t\t<windchill_c>9</windchill_c>\r\n\t\t\r\n        <feelslike_string>48 F (9 C)</feelslike_string>\r\n        <feelslike_f>48</feelslike_f>\r\n        <feelslike_c>9</feelslike_c>\r\n\t\t<visibility_mi>44.0</visibility_mi>\r\n\t\t<visibility_km>70.0</visibility_km>\r\n\t\t<solarradiation></solarradiation>\r\n\t\t<UV>0</UV>\r\n\t\t<precip_1hr_string>-999.00 in ( 0 mm)</precip_1hr_string>\r\n\t\t<precip_1hr_in>-999.00</precip_1hr_in>\r\n\t\t<precip_1hr_metric> 0</precip_1hr_metric>\r\n\t\t<precip_today_string>-999.00 in (-25375 mm)</precip_today_string>\r\n\t\t<precip_today_in>-999.00</precip_today_in>\r\n\t\t<precip_today_metric>-25375</precip_today_metric>\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\t<icon>partlycloudy</icon>\r\n\t\t<icon_url>http://icons.wxug.com/i/c/k/nt_partlycloudy.gif</icon_url>\r\n\t\t<forecast_url>http://www.wunderground.com/global/stations/10706.html</forecast_url>\r\n        \r\n        <history_url>http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=ISCHIFFW6</history_url>\r\n        \r\n\t\t<ob_url>http://www.wunderground.com/cgi-bin/findweather/getForecast?query=49.359680,7.117084</ob_url>\r\n\t</current_observation>\r\n</response>\r\n\t");
+    this['WebRequest']("https://api.wunderground.com/api/2073b5015213cc21/conditions/lang:RU/q/pws:ISAARLAN61.xml", $T1D()['New'](this, $thisType.prototype['ReceiveWundeground'], function () { return JSIL.GetMethodInfo($thisType, "ReceiveWundeground", JSIL.MethodSignature.Action($.String), false); }), "<response>\r\n\t<version>0.1</version>\r\n\t<termsofService>http://www.wunderground.com/weather/api/d/terms.html</termsofService>\r\n\t<features>\r\n\t\t<feature>conditions</feature>\r\n\t</features>\r\n  <current_observation>\r\n\t\t<image>\r\n\t\t<url>http://icons.wxug.com/graphics/wu2/logo_130x80.png</url>\r\n\t\t<title>Weather Underground</title>\r\n\t\t<link>http://www.wunderground.com</link>\r\n\t\t</image>\r\n\t\t<display_location>\r\n\t\t<full>Landsweiler-Reden, Germany</full>\r\n\t\t<city>Landsweiler-Reden</city>\r\n\t\t<state>SL</state>\r\n\t\t<state_name>Germany</state_name>\r\n\t\t<country>DL</country>\r\n\t\t<country_iso3166>DE</country_iso3166>\r\n\t\t<zip>00000</zip>\r\n\t\t<magic>152</magic>\r\n\t\t<wmo>10706</wmo>\r\n\t\t<latitude>49.359680</latitude>\r\n\t\t<longitude>7.117084</longitude>\r\n\t\t<elevation>256.9</elevation>\r\n\t\t</display_location>\r\n\t\t<observation_location>\r\n\t\t<full>Kohlengrubstra\xdfe, Schiffweiler, </full>\r\n\t\t<city>Kohlengrubstra\xdfe, Schiffweiler</city>\r\n\t\t<state></state>\r\n\t\t<country>DE</country>\r\n\t\t<country_iso3166>DE</country_iso3166>\r\n\t\t<latitude>49.359680</latitude>\r\n\t\t<longitude>7.117084</longitude>\r\n\t\t<elevation>1017 ft</elevation>\r\n\t\t</observation_location>\r\n\t\t<estimated>\r\n\t\t</estimated>\r\n\t\t<station_id>ISCHIFFW6</station_id>\r\n\t\t<observation_time>Last Updated on September 17, 10:25 PM CEST</observation_time>\r\n\t\t<observation_time_rfc822>Sun, 17 Sep 2017 22:25:35 +0200</observation_time_rfc822>\r\n\t\t<observation_epoch>1505679935</observation_epoch>\r\n\t\t<local_time_rfc822>Sun, 17 Sep 2017 22:34:52 +0200</local_time_rfc822>\r\n\t\t<local_epoch>1505680492</local_epoch>\r\n\t\t<local_tz_short>CEST</local_tz_short>\r\n\t\t<local_tz_long>Europe/Berlin</local_tz_long>\r\n\t\t<local_tz_offset>+0200</local_tz_offset>\r\n\t\t<weather>Partly Cloudy</weather>\r\n\t\t<temperature_string>48.0 F (8.9 C)</temperature_string>\r\n\t\t<temp_f>48.0</temp_f>\r\n\t\t<temp_c>8.9</temp_c>\r\n\t\t<relative_humidity>96%</relative_humidity>\r\n\t\t<wind_string>Calm</wind_string>\r\n\t\t<wind_dir>North</wind_dir>\r\n\t\t<wind_degrees>-9999</wind_degrees>\r\n\t\t<wind_mph>-9999.0</wind_mph>\r\n\t\t<wind_gust_mph>0</wind_gust_mph>\r\n\t\t<wind_kph>-999.0</wind_kph>\r\n\t\t<wind_gust_kph>0</wind_gust_kph>\r\n\t\t<pressure_mb>1014</pressure_mb>\r\n\t\t<pressure_in>29.95</pressure_in>\r\n\t\t<pressure_trend>+</pressure_trend>\r\n\t\t\r\n\t\t<dewpoint_string>47 F (8 C)</dewpoint_string>\r\n\t\t<dewpoint_f>47</dewpoint_f>\r\n\t\t<dewpoint_c>8</dewpoint_c>\r\n\t\t\r\n\t\t\r\n\t\t<heat_index_string>NA</heat_index_string>\r\n\t\t<heat_index_f>NA</heat_index_f>\r\n\t\t<heat_index_c>NA</heat_index_c>\r\n\t\t\r\n\t\t\r\n\t\t<windchill_string>48 F (9 C)</windchill_string>\r\n\t\t<windchill_f>48</windchill_f>\r\n\t\t<windchill_c>9</windchill_c>\r\n\t\t\r\n        <feelslike_string>48 F (9 C)</feelslike_string>\r\n        <feelslike_f>48</feelslike_f>\r\n        <feelslike_c>9</feelslike_c>\r\n\t\t<visibility_mi>44.0</visibility_mi>\r\n\t\t<visibility_km>70.0</visibility_km>\r\n\t\t<solarradiation></solarradiation>\r\n\t\t<UV>0</UV>\r\n\t\t<precip_1hr_string>-999.00 in ( 0 mm)</precip_1hr_string>\r\n\t\t<precip_1hr_in>-999.00</precip_1hr_in>\r\n\t\t<precip_1hr_metric> 0</precip_1hr_metric>\r\n\t\t<precip_today_string>-999.00 in (-25375 mm)</precip_today_string>\r\n\t\t<precip_today_in>-999.00</precip_today_in>\r\n\t\t<precip_today_metric>-25375</precip_today_metric>\r\n\t\t\r\n\t\t\r\n\t\t\r\n\t\t<icon>partlycloudy</icon>\r\n\t\t<icon_url>http://icons.wxug.com/i/c/k/nt_partlycloudy.gif</icon_url>\r\n\t\t<forecast_url>http://www.wunderground.com/global/stations/10706.html</forecast_url>\r\n        \r\n        <history_url>http://www.wunderground.com/weatherstation/WXDailyHistory.asp?ID=ISCHIFFW6</history_url>\r\n        \r\n\t\t<ob_url>http://www.wunderground.com/cgi-bin/findweather/getForecast?query=49.359680,7.117084</ob_url>\r\n\t</current_observation>\r\n</response>\r\n\t");
   };
 
   function MainModel_set_BackgroundColor (value) {
@@ -541,7 +1128,7 @@ JSIL.DeclareNamespace("senior_clock_html5");
     }
   };
 
-  function MainModel_WebRequest (url, targetAction, fallbackResponce, $exception) {
+ function MainModel_WebRequest (url, targetAction, fallbackResponce, $exception) {
     try {
      	var xmlHttp = new XMLHttpRequest();
     xmlHttp.onload = function() { 
@@ -764,6 +1351,7 @@ JSIL.DeclareNamespace("senior_clock_html5");
     );
 
     $['Constant']({Static:true , Public:false}, "noGoWarning", "\u0418\u0437 \u0434\u043e\u043c\u0430 \u043d\u0435 \u0432\u044b\u0445\u043e\u0434\u0438\u0442\u044c!\n\u0414\u0432\u0435\u0440\u044c \u043d\u0430 \u0443\u043b\u0438\u0446\u0443 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0442\u044c!"); 
+    $['Constant']({Static:true , Public:false}, "DarkWarning", "\u041d\u0430 \u0443\u043b\u0438\u0446\u0435 \u0442\u0435\u043c\u043d\u043e!\n\u0418\u0437 \u0434\u043e\u043c\u0430 \u043d\u0435 \u0432\u044b\u0445\u043e\u0434\u0438\u0442\u044c!\n\u0414\u0432\u0435\u0440\u044c \u043d\u0430 \u0443\u043b\u0438\u0446\u0443 \u043d\u0435 \u043e\u0442\u043a\u0440\u044b\u0432\u0430\u0442\u044c!"); 
     $['Field']({Static:false, Public:false}, "PropertyChanged", $asm_CSharpXamlForHtml5_System_dll.TypeRef("System.ComponentModel.PropertyChangedEventHandler")); 
     $['Field']({Static:false, Public:false}, "windlimits", $jsilcore.TypeRef("System.Array", [$.Int32])); 
     $['Field']({Static:false, Public:false}, "windNames", $jsilcore.TypeRef("System.Array", [$.String])); 
@@ -1084,189 +1672,189 @@ JSIL.DeclareNamespace("senior_clock_html5");
       if (this !== null) {
         $T03().$Cast(this).XamlSourcePath = "senior_clock_html5\\MainPage.xaml";
       }
-      var Style_a642aa95cfc04d3bb443525a4bbe3354 = $S00().Construct();
-      Style_a642aa95cfc04d3bb443525a4bbe3354['set_TargetType']($T05().__Type__);
-      var Setter_6cd91b85bc5d487ca7123b0b8a6f2272 = $S01().Construct();
-      Setter_6cd91b85bc5d487ca7123b0b8a6f2272.Setter$Property$value = $T07().ForegroundProperty;
-      Setter_6cd91b85bc5d487ca7123b0b8a6f2272['set_Value']($T08().$Cast($T09()['ConvertFromInvariantString']($T08().__Type__, "#FFBBBBBB")));
-      $S02().CallVirtual("Add", null, Style_a642aa95cfc04d3bb443525a4bbe3354['get_Setters'](), Setter_6cd91b85bc5d487ca7123b0b8a6f2272);
-      (this['get_Resources']())['set_Item']("TextBlockStyle", Style_a642aa95cfc04d3bb443525a4bbe3354);
-      var Grid_c02a92f201c34202973e60359f4ce71 = new ($T0C())();
-      var StackPanel_33cda803a5b14fbbb39cfc379532315b = new ($T0D())();
-      StackPanel_33cda803a5b14fbbb39cfc379532315b['set_Orientation']($T0E().Vertical);
-      var StackPanel_592386866e994b76a133f8d3b244a124 = new ($T0D())();
-      StackPanel_592386866e994b76a133f8d3b244a124['set_Orientation']($T0E().Horizontal);
-      StackPanel_592386866e994b76a133f8d3b244a124['set_HorizontalAlignment']($T0F().Center);
-      var Image_541e4b6f812b4665afc0b7e8f8509aed = new ($T10())();
-      $T11().prototype['RegisterName'].call(this, "wetter_icon", Image_541e4b6f812b4665afc0b7e8f8509aed);
-      Image_541e4b6f812b4665afc0b7e8f8509aed['set_Name']("wetter_icon");
-      Image_541e4b6f812b4665afc0b7e8f8509aed['set_Height']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "160")));
-      Image_541e4b6f812b4665afc0b7e8f8509aed['set_Width']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "200")));
-      (Image_541e4b6f812b4665afc0b7e8f8509aed.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,0,20,0"))['MemberwiseClone']());
-      var Binding_1e0be6937a4e4a4b8bc0c33583a33616 = $S03().Construct();
-      Binding_1e0be6937a4e4a4b8bc0c33583a33616['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "IconPath")));
-      var TextBlock_eea600d4bde14307b14fbe0c61c53fa2 = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "Clock", TextBlock_eea600d4bde14307b14fbe0c61c53fa2);
-      TextBlock_eea600d4bde14307b14fbe0c61c53fa2['set_Name']("Clock");
-      TextBlock_eea600d4bde14307b14fbe0c61c53fa2['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "140")));
-      TextBlock_eea600d4bde14307b14fbe0c61c53fa2['set_HorizontalAlignment']($T0F().Center);
-      var Binding_8282e55da6d846259e624d5001d72f99 = $S03().Construct();
-      Binding_8282e55da6d846259e624d5001d72f99['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TimeOffDay")));
-      Binding_8282e55da6d846259e624d5001d72f99['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'13:09'"));
-      var Binding_95fa8304f6c2464da9edf65e342c05c0 = $S03().Construct();
-      Binding_95fa8304f6c2464da9edf65e342c05c0['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      var StackPanel_ba11e3c2a3f14385bf61c8f0200d72da = new ($T0D())();
-      StackPanel_ba11e3c2a3f14385bf61c8f0200d72da['set_Orientation']($T0E().Vertical);
-      StackPanel_ba11e3c2a3f14385bf61c8f0200d72da['set_HorizontalAlignment']($T0F().Center);
-      (StackPanel_ba11e3c2a3f14385bf61c8f0200d72da.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "20,0,0,0"))['MemberwiseClone']());
-      var TextBlock_0ec414d019e545309732aed015dd62a9 = new ($T05())();
-      TextBlock_0ec414d019e545309732aed015dd62a9['set_Text']("\u0421\u0435\u0439\u0447\u0430\u0441:");
-      $T11().prototype['RegisterName'].call(this, "propmtLongDate", TextBlock_0ec414d019e545309732aed015dd62a9);
-      TextBlock_0ec414d019e545309732aed015dd62a9['set_Name']("propmtLongDate");
-      TextBlock_0ec414d019e545309732aed015dd62a9['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "40")));
-      TextBlock_0ec414d019e545309732aed015dd62a9['set_HorizontalAlignment']($T0F().Left);
-      TextBlock_0ec414d019e545309732aed015dd62a9['set_VerticalAlignment']($T18().Top);
-      (TextBlock_0ec414d019e545309732aed015dd62a9.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,25,0,0"))['MemberwiseClone']());
-      var Binding_4d7e7f3db074498488dec444d0d86e2 = $S03().Construct();
-      Binding_4d7e7f3db074498488dec444d0d86e2['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      var TextBlock_37e7a9d779ce477284938fb7117ca229 = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "longDate", TextBlock_37e7a9d779ce477284938fb7117ca229);
-      TextBlock_37e7a9d779ce477284938fb7117ca229['set_Name']("longDate");
-      TextBlock_37e7a9d779ce477284938fb7117ca229['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "30")));
-      TextBlock_37e7a9d779ce477284938fb7117ca229['set_HorizontalAlignment']($T0F().Center);
-      TextBlock_37e7a9d779ce477284938fb7117ca229['set_VerticalAlignment']($T18().Center);
-      TextBlock_37e7a9d779ce477284938fb7117ca229['set_TextWrapping']($T19().Wrap);
-      (TextBlock_37e7a9d779ce477284938fb7117ca229.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,0"))['MemberwiseClone']());
-      var Binding_e0e0cafe8d1c4b6bbb67fbe7f7944142 = $S03().Construct();
-      Binding_e0e0cafe8d1c4b6bbb67fbe7f7944142['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "DateAndWeekDay")));
-      Binding_e0e0cafe8d1c4b6bbb67fbe7f7944142['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'31.\u0438\u044e\u043b\u044f\n\u041f\u043e\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u0438\u043a'"));
-      var Binding_e4ce23a3479946d3a8300e4a5cc47c51 = $S03().Construct();
-      Binding_e4ce23a3479946d3a8300e4a5cc47c51['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      (StackPanel_ba11e3c2a3f14385bf61c8f0200d72da['get_Children']())['Add'](TextBlock_0ec414d019e545309732aed015dd62a9);
-      (StackPanel_ba11e3c2a3f14385bf61c8f0200d72da['get_Children']())['Add'](TextBlock_37e7a9d779ce477284938fb7117ca229);
-      (StackPanel_592386866e994b76a133f8d3b244a124['get_Children']())['Add'](Image_541e4b6f812b4665afc0b7e8f8509aed);
-      (StackPanel_592386866e994b76a133f8d3b244a124['get_Children']())['Add'](TextBlock_eea600d4bde14307b14fbe0c61c53fa2);
-      (StackPanel_592386866e994b76a133f8d3b244a124['get_Children']())['Add'](StackPanel_ba11e3c2a3f14385bf61c8f0200d72da);
-      var TextBlock_620ca7f9dff54ae0ab1a4db93de07abe = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "PartOfDay", TextBlock_620ca7f9dff54ae0ab1a4db93de07abe);
-      TextBlock_620ca7f9dff54ae0ab1a4db93de07abe['set_Name']("PartOfDay");
-      TextBlock_620ca7f9dff54ae0ab1a4db93de07abe['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "100")));
-      TextBlock_620ca7f9dff54ae0ab1a4db93de07abe['set_HorizontalAlignment']($T0F().Center);
-      var Binding_28966d01c1c6441eaf2f3b72c02d5f4d = $S03().Construct();
-      Binding_28966d01c1c6441eaf2f3b72c02d5f4d['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "PeriodOffDay")));
-      Binding_28966d01c1c6441eaf2f3b72c02d5f4d['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'\u041f\u043e\u0437\u0434\u043d\u0438\u0439 \u0434\u0435\u043d\u044c'"));
-      var Binding_ed0638b0d9b64c52851fea86b5c68016 = $S03().Construct();
-      Binding_ed0638b0d9b64c52851fea86b5c68016['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      var TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "info", TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b);
-      TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b['set_Name']("info");
-      TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "40")));
-      TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b['set_HorizontalAlignment']($T0F().Center);
-      TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b['set_TextWrapping']($T19().Wrap);
-      (TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
-      var Binding_b7091d3b0dde4855a4e12bb5e0fbb72d = $S03().Construct();
-      Binding_b7091d3b0dde4855a4e12bb5e0fbb72d['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "Info")));
-      Binding_b7091d3b0dde4855a4e12bb5e0fbb72d['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'\u0412\u0441\u0435 \u043d\u0430 \u0441\u0432\u0435\u0442\u0435 \u0437\u0430\u043a\u0440\u044b\u0442\u043e \u043d\u0430 \u0444\u0438\u0433'"));
-      var Binding_59b2034e650e45d0bbf1bab2df9b9b19 = $S03().Construct();
-      Binding_59b2034e650e45d0bbf1bab2df9b9b19['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      var TextBlock_eff9aa805d25465a93e2deb7b4937894 = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "warning", TextBlock_eff9aa805d25465a93e2deb7b4937894);
-      TextBlock_eff9aa805d25465a93e2deb7b4937894['set_Name']("warning");
-      TextBlock_eff9aa805d25465a93e2deb7b4937894['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "40")));
-      TextBlock_eff9aa805d25465a93e2deb7b4937894['set_HorizontalAlignment']($T0F().Center);
-      TextBlock_eff9aa805d25465a93e2deb7b4937894['set_TextWrapping']($T19().Wrap);
-      (TextBlock_eff9aa805d25465a93e2deb7b4937894.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,0"))['MemberwiseClone']());
-      var Binding_b65b3757f16649d9b6d6cccfb2e65348 = $S03().Construct();
-      Binding_b65b3757f16649d9b6d6cccfb2e65348['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "Warning")));
-      Binding_b65b3757f16649d9b6d6cccfb2e65348['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'\u0412\u0441\u0435 \u0441\u043f\u044f\u0442!!!'"));
-      var Binding_8f187a960b084a7db1d06833287c4dc8 = $S03().Construct();
-      Binding_8f187a960b084a7db1d06833287c4dc8['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "WarningColor")));
-      var TextBlock_118927d5c52f4d19b00192b2f91ad5b2 = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "wetter_text", TextBlock_118927d5c52f4d19b00192b2f91ad5b2);
-      TextBlock_118927d5c52f4d19b00192b2f91ad5b2['set_Name']("wetter_text");
-      TextBlock_118927d5c52f4d19b00192b2f91ad5b2['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "30")));
-      TextBlock_118927d5c52f4d19b00192b2f91ad5b2['set_HorizontalAlignment']($T0F().Center);
-      (TextBlock_118927d5c52f4d19b00192b2f91ad5b2.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
-      var Binding_bc2f098d63d0422a91226e188dcf9ba5 = $S03().Construct();
-      Binding_bc2f098d63d0422a91226e188dcf9ba5['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "WetterText")));
-      Binding_bc2f098d63d0422a91226e188dcf9ba5['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'wetter'"));
-      var Binding_adc0e961bc464013ab86c7a2dd7e7d91 = $S03().Construct();
-      Binding_adc0e961bc464013ab86c7a2dd7e7d91['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      var TextBlock_ac39045f43294940ac9fec382a8e8b14 = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "erroInfo", TextBlock_ac39045f43294940ac9fec382a8e8b14);
-      TextBlock_ac39045f43294940ac9fec382a8e8b14['set_Name']("erroInfo");
-      TextBlock_ac39045f43294940ac9fec382a8e8b14['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "8")));
-      TextBlock_ac39045f43294940ac9fec382a8e8b14['set_HorizontalAlignment']($T0F().Center);
-      (TextBlock_ac39045f43294940ac9fec382a8e8b14.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
-      var Binding_6573aeef4d5441c2b9b885f267a78302 = $S03().Construct();
-      Binding_6573aeef4d5441c2b9b885f267a78302['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "ErrorInfo")));
-      Binding_6573aeef4d5441c2b9b885f267a78302['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'error'"));
-      var Binding_38e3ce4486d441acb5cc04b718ff894d = $S03().Construct();
-      Binding_38e3ce4486d441acb5cc04b718ff894d['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      var Grid_f372ed84db6d4465b915af2a58802422 = new ($T0C())();
-      $T0C()['SetRow'](Grid_f372ed84db6d4465b915af2a58802422, $T1C().$Cast($T09()['ConvertFromInvariantString']($T1C().__Type__, "1")));
-      var ColumnDefinition_77f41b77799e47c58ed469ec56b3fa46 = new ($T1D())();
-      (ColumnDefinition_77f41b77799e47c58ed469ec56b3fa46.Width = $T1E().$Cast($T09()['ConvertFromInvariantString']($T1E().__Type__, "144*"))['MemberwiseClone']());
-      var ColumnDefinition_d2595557e077409fb66ffa078ee6e4d9 = new ($T1D())();
-      (ColumnDefinition_d2595557e077409fb66ffa078ee6e4d9.Width = $T1E().$Cast($T09()['ConvertFromInvariantString']($T1E().__Type__, "256*"))['MemberwiseClone']());
-      var ColumnDefinition_98fd64997c1a4bf396693518adc3c384 = new ($T1D())();
-      (ColumnDefinition_98fd64997c1a4bf396693518adc3c384.Width = $T1E().$Cast($T09()['ConvertFromInvariantString']($T1E().__Type__, "256*"))['MemberwiseClone']());
-      (Grid_f372ed84db6d4465b915af2a58802422['get_ColumnDefinitions']())['Add'](ColumnDefinition_77f41b77799e47c58ed469ec56b3fa46);
-      (Grid_f372ed84db6d4465b915af2a58802422['get_ColumnDefinitions']())['Add'](ColumnDefinition_d2595557e077409fb66ffa078ee6e4d9);
-      (Grid_f372ed84db6d4465b915af2a58802422['get_ColumnDefinitions']())['Add'](ColumnDefinition_98fd64997c1a4bf396693518adc3c384);
-      var TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9 = new ($T05())();
-      $T11().prototype['RegisterName'].call(this, "birthdays_text", TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9);
-      TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9['set_Name']("birthdays_text");
-      TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "20")));
-      $T0C()['SetColumn'](TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9, $T1C().$Cast($T09()['ConvertFromInvariantString']($T1C().__Type__, "2")));
-      TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9['set_HorizontalAlignment']($T0F().Center);
-      (TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
-      var Binding_aa0508e2e5e14abcb181f52d144e473 = $S03().Construct();
-      Binding_aa0508e2e5e14abcb181f52d144e473['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "Birthdays")));
-      Binding_aa0508e2e5e14abcb181f52d144e473['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'Birthdays'"));
-      var Binding_a7c0b93428e84d8f9752b520cb292dad = $S03().Construct();
-      Binding_a7c0b93428e84d8f9752b520cb292dad['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
-      (Grid_f372ed84db6d4465b915af2a58802422['get_Children']())['Add'](TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](StackPanel_592386866e994b76a133f8d3b244a124);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](TextBlock_620ca7f9dff54ae0ab1a4db93de07abe);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](TextBlock_eff9aa805d25465a93e2deb7b4937894);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](TextBlock_118927d5c52f4d19b00192b2f91ad5b2);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](TextBlock_ac39045f43294940ac9fec382a8e8b14);
-      (StackPanel_33cda803a5b14fbbb39cfc379532315b['get_Children']())['Add'](Grid_f372ed84db6d4465b915af2a58802422);
-      (Grid_c02a92f201c34202973e60359f4ce71['get_Children']())['Add'](StackPanel_33cda803a5b14fbbb39cfc379532315b);
-      var Binding_d59c1eaa79ab49998b2798a917e8885a = $S03().Construct();
-      Binding_d59c1eaa79ab49998b2798a917e8885a['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "BackgroundColor")));
-      this['set_Content'](Grid_c02a92f201c34202973e60359f4ce71);
-      this.wetter_icon = Image_541e4b6f812b4665afc0b7e8f8509aed;
-      this.Clock = TextBlock_eea600d4bde14307b14fbe0c61c53fa2;
-      this.propmtLongDate = TextBlock_0ec414d019e545309732aed015dd62a9;
-      this.longDate = TextBlock_37e7a9d779ce477284938fb7117ca229;
-      this.PartOfDay = TextBlock_620ca7f9dff54ae0ab1a4db93de07abe;
-      this.info = TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b;
-      this.warning = TextBlock_eff9aa805d25465a93e2deb7b4937894;
-      this.wetter_text = TextBlock_118927d5c52f4d19b00192b2f91ad5b2;
-      this.erroInfo = TextBlock_ac39045f43294940ac9fec382a8e8b14;
-      this.birthdays_text = TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9;
-      Image_541e4b6f812b4665afc0b7e8f8509aed['SetBinding']($T10().SourceProperty, Binding_1e0be6937a4e4a4b8bc0c33583a33616);
-      TextBlock_eea600d4bde14307b14fbe0c61c53fa2['SetBinding']($T05().TextProperty, Binding_8282e55da6d846259e624d5001d72f99);
-      TextBlock_eea600d4bde14307b14fbe0c61c53fa2['SetBinding']($T07().ForegroundProperty, Binding_95fa8304f6c2464da9edf65e342c05c0);
-      TextBlock_0ec414d019e545309732aed015dd62a9['SetBinding']($T07().ForegroundProperty, Binding_4d7e7f3db074498488dec444d0d86e2);
-      TextBlock_37e7a9d779ce477284938fb7117ca229['SetBinding']($T05().TextProperty, Binding_e0e0cafe8d1c4b6bbb67fbe7f7944142);
-      TextBlock_37e7a9d779ce477284938fb7117ca229['SetBinding']($T07().ForegroundProperty, Binding_e4ce23a3479946d3a8300e4a5cc47c51);
-      TextBlock_620ca7f9dff54ae0ab1a4db93de07abe['SetBinding']($T05().TextProperty, Binding_28966d01c1c6441eaf2f3b72c02d5f4d);
-      TextBlock_620ca7f9dff54ae0ab1a4db93de07abe['SetBinding']($T07().ForegroundProperty, Binding_ed0638b0d9b64c52851fea86b5c68016);
-      TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b['SetBinding']($T05().TextProperty, Binding_b7091d3b0dde4855a4e12bb5e0fbb72d);
-      TextBlock_f4bbc6f6116b444f8d3b3dc39ee8351b['SetBinding']($T07().ForegroundProperty, Binding_59b2034e650e45d0bbf1bab2df9b9b19);
-      TextBlock_eff9aa805d25465a93e2deb7b4937894['SetBinding']($T05().TextProperty, Binding_b65b3757f16649d9b6d6cccfb2e65348);
-      TextBlock_eff9aa805d25465a93e2deb7b4937894['SetBinding']($T07().ForegroundProperty, Binding_8f187a960b084a7db1d06833287c4dc8);
-      TextBlock_118927d5c52f4d19b00192b2f91ad5b2['SetBinding']($T05().TextProperty, Binding_bc2f098d63d0422a91226e188dcf9ba5);
-      TextBlock_118927d5c52f4d19b00192b2f91ad5b2['SetBinding']($T07().ForegroundProperty, Binding_adc0e961bc464013ab86c7a2dd7e7d91);
-      TextBlock_ac39045f43294940ac9fec382a8e8b14['SetBinding']($T05().TextProperty, Binding_6573aeef4d5441c2b9b885f267a78302);
-      TextBlock_ac39045f43294940ac9fec382a8e8b14['SetBinding']($T07().ForegroundProperty, Binding_38e3ce4486d441acb5cc04b718ff894d);
-      TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9['SetBinding']($T05().TextProperty, Binding_aa0508e2e5e14abcb181f52d144e473);
-      TextBlock_d6c52b1f37fd4501bbc5e7bd3e1610c9['SetBinding']($T07().ForegroundProperty, Binding_a7c0b93428e84d8f9752b520cb292dad);
-      Grid_c02a92f201c34202973e60359f4ce71['SetBinding']($T1B().BackgroundProperty, Binding_d59c1eaa79ab49998b2798a917e8885a);
+      var Style_f6afb773dcb34bfa96f29ff639c405f = $S00().Construct();
+      Style_f6afb773dcb34bfa96f29ff639c405f['set_TargetType']($T05().__Type__);
+      var Setter_1a7dede779774d2f8b8e8b7f48ba0deb = $S01().Construct();
+      Setter_1a7dede779774d2f8b8e8b7f48ba0deb.Setter$Property$value = $T07().ForegroundProperty;
+      Setter_1a7dede779774d2f8b8e8b7f48ba0deb['set_Value']($T08().$Cast($T09()['ConvertFromInvariantString']($T08().__Type__, "#FFBBBBBB")));
+      $S02().CallVirtual("Add", null, Style_f6afb773dcb34bfa96f29ff639c405f['get_Setters'](), Setter_1a7dede779774d2f8b8e8b7f48ba0deb);
+      (this['get_Resources']())['set_Item']("TextBlockStyle", Style_f6afb773dcb34bfa96f29ff639c405f);
+      var Grid_3c09cfbca6d74bd6a9a0777996c15219 = new ($T0C())();
+      var StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf = new ($T0D())();
+      StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['set_Orientation']($T0E().Vertical);
+      var StackPanel_1a26ac202fcc4fc78c202be558ad5cea = new ($T0D())();
+      StackPanel_1a26ac202fcc4fc78c202be558ad5cea['set_Orientation']($T0E().Horizontal);
+      StackPanel_1a26ac202fcc4fc78c202be558ad5cea['set_HorizontalAlignment']($T0F().Center);
+      var Image_da7226d377b24370906eded82c79286d = new ($T10())();
+      $T11().prototype['RegisterName'].call(this, "wetter_icon", Image_da7226d377b24370906eded82c79286d);
+      Image_da7226d377b24370906eded82c79286d['set_Name']("wetter_icon");
+      Image_da7226d377b24370906eded82c79286d['set_Height']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "160")));
+      Image_da7226d377b24370906eded82c79286d['set_Width']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "200")));
+      (Image_da7226d377b24370906eded82c79286d.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,0,20,0"))['MemberwiseClone']());
+      var Binding_12e5f108dfa043298dc71ba41ff6c25c = $S03().Construct();
+      Binding_12e5f108dfa043298dc71ba41ff6c25c['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "IconPath")));
+      var TextBlock_9cc586f91d44480ea4c09dd8a373f2ae = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "Clock", TextBlock_9cc586f91d44480ea4c09dd8a373f2ae);
+      TextBlock_9cc586f91d44480ea4c09dd8a373f2ae['set_Name']("Clock");
+      TextBlock_9cc586f91d44480ea4c09dd8a373f2ae['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "140")));
+      TextBlock_9cc586f91d44480ea4c09dd8a373f2ae['set_HorizontalAlignment']($T0F().Center);
+      var Binding_05cd37d8ee8b456f9b3fe42e0b62c46f = $S03().Construct();
+      Binding_05cd37d8ee8b456f9b3fe42e0b62c46f['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TimeOffDay")));
+      Binding_05cd37d8ee8b456f9b3fe42e0b62c46f['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'13:09'"));
+      var Binding_1f0c0a04001b4a3a8dea572a362ccd2e = $S03().Construct();
+      Binding_1f0c0a04001b4a3a8dea572a362ccd2e['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      var StackPanel_14a29283e5d148089a37d7dcee6482e8 = new ($T0D())();
+      StackPanel_14a29283e5d148089a37d7dcee6482e8['set_Orientation']($T0E().Vertical);
+      StackPanel_14a29283e5d148089a37d7dcee6482e8['set_HorizontalAlignment']($T0F().Center);
+      (StackPanel_14a29283e5d148089a37d7dcee6482e8.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "20,0,0,0"))['MemberwiseClone']());
+      var TextBlock_9370bc25fb234f8388d770d1dc306df5 = new ($T05())();
+      TextBlock_9370bc25fb234f8388d770d1dc306df5['set_Text']("\u0421\u0435\u0439\u0447\u0430\u0441:");
+      $T11().prototype['RegisterName'].call(this, "propmtLongDate", TextBlock_9370bc25fb234f8388d770d1dc306df5);
+      TextBlock_9370bc25fb234f8388d770d1dc306df5['set_Name']("propmtLongDate");
+      TextBlock_9370bc25fb234f8388d770d1dc306df5['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "40")));
+      TextBlock_9370bc25fb234f8388d770d1dc306df5['set_HorizontalAlignment']($T0F().Left);
+      TextBlock_9370bc25fb234f8388d770d1dc306df5['set_VerticalAlignment']($T18().Top);
+      (TextBlock_9370bc25fb234f8388d770d1dc306df5.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,25,0,0"))['MemberwiseClone']());
+      var Binding_9bbea704bcd34a23ba29b418cb8fec53 = $S03().Construct();
+      Binding_9bbea704bcd34a23ba29b418cb8fec53['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      var TextBlock_cfbadaa1e86746ea958588977637a897 = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "longDate", TextBlock_cfbadaa1e86746ea958588977637a897);
+      TextBlock_cfbadaa1e86746ea958588977637a897['set_Name']("longDate");
+      TextBlock_cfbadaa1e86746ea958588977637a897['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "30")));
+      TextBlock_cfbadaa1e86746ea958588977637a897['set_HorizontalAlignment']($T0F().Center);
+      TextBlock_cfbadaa1e86746ea958588977637a897['set_VerticalAlignment']($T18().Center);
+      TextBlock_cfbadaa1e86746ea958588977637a897['set_TextWrapping']($T19().Wrap);
+      (TextBlock_cfbadaa1e86746ea958588977637a897.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,0"))['MemberwiseClone']());
+      var Binding_55b60bff90004fe7b7e1ec99235d5c7 = $S03().Construct();
+      Binding_55b60bff90004fe7b7e1ec99235d5c7['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "DateAndWeekDay")));
+      Binding_55b60bff90004fe7b7e1ec99235d5c7['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'31.\u0438\u044e\u043b\u044f\n\u041f\u043e\u043d\u0435\u0434\u0435\u043b\u044c\u043d\u0438\u043a'"));
+      var Binding_6e7d079c08b54fda8b0cc956182b60f = $S03().Construct();
+      Binding_6e7d079c08b54fda8b0cc956182b60f['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      (StackPanel_14a29283e5d148089a37d7dcee6482e8['get_Children']())['Add'](TextBlock_9370bc25fb234f8388d770d1dc306df5);
+      (StackPanel_14a29283e5d148089a37d7dcee6482e8['get_Children']())['Add'](TextBlock_cfbadaa1e86746ea958588977637a897);
+      (StackPanel_1a26ac202fcc4fc78c202be558ad5cea['get_Children']())['Add'](Image_da7226d377b24370906eded82c79286d);
+      (StackPanel_1a26ac202fcc4fc78c202be558ad5cea['get_Children']())['Add'](TextBlock_9cc586f91d44480ea4c09dd8a373f2ae);
+      (StackPanel_1a26ac202fcc4fc78c202be558ad5cea['get_Children']())['Add'](StackPanel_14a29283e5d148089a37d7dcee6482e8);
+      var TextBlock_197213046e3c4606920f91a031639d96 = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "PartOfDay", TextBlock_197213046e3c4606920f91a031639d96);
+      TextBlock_197213046e3c4606920f91a031639d96['set_Name']("PartOfDay");
+      TextBlock_197213046e3c4606920f91a031639d96['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "100")));
+      TextBlock_197213046e3c4606920f91a031639d96['set_HorizontalAlignment']($T0F().Center);
+      var Binding_04328481456d41fcbaeecebe809eb04d = $S03().Construct();
+      Binding_04328481456d41fcbaeecebe809eb04d['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "PeriodOffDay")));
+      Binding_04328481456d41fcbaeecebe809eb04d['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'\u041f\u043e\u0437\u0434\u043d\u0438\u0439 \u0434\u0435\u043d\u044c'"));
+      var Binding_cb9b4981c1f046e7bf697580e1f8644 = $S03().Construct();
+      Binding_cb9b4981c1f046e7bf697580e1f8644['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      var TextBlock_613fa5fc614c45b68d7e68a55e887421 = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "info", TextBlock_613fa5fc614c45b68d7e68a55e887421);
+      TextBlock_613fa5fc614c45b68d7e68a55e887421['set_Name']("info");
+      TextBlock_613fa5fc614c45b68d7e68a55e887421['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "40")));
+      TextBlock_613fa5fc614c45b68d7e68a55e887421['set_HorizontalAlignment']($T0F().Center);
+      TextBlock_613fa5fc614c45b68d7e68a55e887421['set_TextWrapping']($T19().Wrap);
+      (TextBlock_613fa5fc614c45b68d7e68a55e887421.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
+      var Binding_3c477104609a42d0ba2e0c7fe71432da = $S03().Construct();
+      Binding_3c477104609a42d0ba2e0c7fe71432da['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "Info")));
+      Binding_3c477104609a42d0ba2e0c7fe71432da['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'\u0412\u0441\u0435 \u043d\u0430 \u0441\u0432\u0435\u0442\u0435 \u0437\u0430\u043a\u0440\u044b\u0442\u043e \u043d\u0430 \u0444\u0438\u0433'"));
+      var Binding_a01ed95c335b4763b90d0c84f2cec628 = $S03().Construct();
+      Binding_a01ed95c335b4763b90d0c84f2cec628['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      var TextBlock_dfd821639fed44c6ad277814d2679b41 = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "warning", TextBlock_dfd821639fed44c6ad277814d2679b41);
+      TextBlock_dfd821639fed44c6ad277814d2679b41['set_Name']("warning");
+      TextBlock_dfd821639fed44c6ad277814d2679b41['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "40")));
+      TextBlock_dfd821639fed44c6ad277814d2679b41['set_HorizontalAlignment']($T0F().Center);
+      TextBlock_dfd821639fed44c6ad277814d2679b41['set_TextWrapping']($T19().Wrap);
+      (TextBlock_dfd821639fed44c6ad277814d2679b41.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,0"))['MemberwiseClone']());
+      var Binding_a134d13528044346a923a328394195b0 = $S03().Construct();
+      Binding_a134d13528044346a923a328394195b0['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "Warning")));
+      Binding_a134d13528044346a923a328394195b0['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'\u0412\u0441\u0435 \u0441\u043f\u044f\u0442!!!'"));
+      var Binding_f433f64dd6094ddd85357e6a6feb408b = $S03().Construct();
+      Binding_f433f64dd6094ddd85357e6a6feb408b['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "WarningColor")));
+      var TextBlock_834007e8e6d24eaf93cb659d5d1a382f = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "wetter_text", TextBlock_834007e8e6d24eaf93cb659d5d1a382f);
+      TextBlock_834007e8e6d24eaf93cb659d5d1a382f['set_Name']("wetter_text");
+      TextBlock_834007e8e6d24eaf93cb659d5d1a382f['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "30")));
+      TextBlock_834007e8e6d24eaf93cb659d5d1a382f['set_HorizontalAlignment']($T0F().Center);
+      (TextBlock_834007e8e6d24eaf93cb659d5d1a382f.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
+      var Binding_dce5081343c64d749a5811be9d8b8eb3 = $S03().Construct();
+      Binding_dce5081343c64d749a5811be9d8b8eb3['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "WetterText")));
+      Binding_dce5081343c64d749a5811be9d8b8eb3['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'wetter'"));
+      var Binding_423b318c24bc4ad8af6787398853553c = $S03().Construct();
+      Binding_423b318c24bc4ad8af6787398853553c['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      var TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6 = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "erroInfo", TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6);
+      TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6['set_Name']("erroInfo");
+      TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "8")));
+      TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6['set_HorizontalAlignment']($T0F().Center);
+      (TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
+      var Binding_698e9669d92c48d98d7dfb6baf3a941a = $S03().Construct();
+      Binding_698e9669d92c48d98d7dfb6baf3a941a['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "ErrorInfo")));
+      Binding_698e9669d92c48d98d7dfb6baf3a941a['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'error'"));
+      var Binding_9acdbaeaecb048e696d9f87ca8bbe77f = $S03().Construct();
+      Binding_9acdbaeaecb048e696d9f87ca8bbe77f['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      var Grid_dde91ad4b19b4bf1aeacbf67322d1834 = new ($T0C())();
+      $T0C()['SetRow'](Grid_dde91ad4b19b4bf1aeacbf67322d1834, $T1C().$Cast($T09()['ConvertFromInvariantString']($T1C().__Type__, "1")));
+      var ColumnDefinition_e6acbc7292a74750adb1f94da42f724c = new ($T1D())();
+      (ColumnDefinition_e6acbc7292a74750adb1f94da42f724c.Width = $T1E().$Cast($T09()['ConvertFromInvariantString']($T1E().__Type__, "144*"))['MemberwiseClone']());
+      var ColumnDefinition_c30f3e46187143e4b3ec7927c35ca58a = new ($T1D())();
+      (ColumnDefinition_c30f3e46187143e4b3ec7927c35ca58a.Width = $T1E().$Cast($T09()['ConvertFromInvariantString']($T1E().__Type__, "256*"))['MemberwiseClone']());
+      var ColumnDefinition_c6a009c10f6b4562bb52c683d0abafd0 = new ($T1D())();
+      (ColumnDefinition_c6a009c10f6b4562bb52c683d0abafd0.Width = $T1E().$Cast($T09()['ConvertFromInvariantString']($T1E().__Type__, "256*"))['MemberwiseClone']());
+      (Grid_dde91ad4b19b4bf1aeacbf67322d1834['get_ColumnDefinitions']())['Add'](ColumnDefinition_e6acbc7292a74750adb1f94da42f724c);
+      (Grid_dde91ad4b19b4bf1aeacbf67322d1834['get_ColumnDefinitions']())['Add'](ColumnDefinition_c30f3e46187143e4b3ec7927c35ca58a);
+      (Grid_dde91ad4b19b4bf1aeacbf67322d1834['get_ColumnDefinitions']())['Add'](ColumnDefinition_c6a009c10f6b4562bb52c683d0abafd0);
+      var TextBlock_9c3649882ac74c2e9afba70d431a4e14 = new ($T05())();
+      $T11().prototype['RegisterName'].call(this, "birthdays_text", TextBlock_9c3649882ac74c2e9afba70d431a4e14);
+      TextBlock_9c3649882ac74c2e9afba70d431a4e14['set_Name']("birthdays_text");
+      TextBlock_9c3649882ac74c2e9afba70d431a4e14['set_FontSize']($T12().$Cast($T09()['ConvertFromInvariantString']($T12().__Type__, "20")));
+      $T0C()['SetColumn'](TextBlock_9c3649882ac74c2e9afba70d431a4e14, $T1C().$Cast($T09()['ConvertFromInvariantString']($T1C().__Type__, "2")));
+      TextBlock_9c3649882ac74c2e9afba70d431a4e14['set_HorizontalAlignment']($T0F().Center);
+      (TextBlock_9c3649882ac74c2e9afba70d431a4e14.Margin = $T13().$Cast($T09()['ConvertFromInvariantString']($T13().__Type__, "0,20"))['MemberwiseClone']());
+      var Binding_9306dfd659ee4fb1946a47145dad5060 = $S03().Construct();
+      Binding_9306dfd659ee4fb1946a47145dad5060['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "Birthdays")));
+      Binding_9306dfd659ee4fb1946a47145dad5060['set_FallbackValue']($T09()['ConvertFromInvariantString']($T17().__Type__, "'Birthdays'"));
+      var Binding_5de18bb8a1ad45558598186661888861 = $S03().Construct();
+      Binding_5de18bb8a1ad45558598186661888861['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "TextColor")));
+      (Grid_dde91ad4b19b4bf1aeacbf67322d1834['get_Children']())['Add'](TextBlock_9c3649882ac74c2e9afba70d431a4e14);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](StackPanel_1a26ac202fcc4fc78c202be558ad5cea);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](TextBlock_197213046e3c4606920f91a031639d96);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](TextBlock_613fa5fc614c45b68d7e68a55e887421);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](TextBlock_dfd821639fed44c6ad277814d2679b41);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](TextBlock_834007e8e6d24eaf93cb659d5d1a382f);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6);
+      (StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf['get_Children']())['Add'](Grid_dde91ad4b19b4bf1aeacbf67322d1834);
+      (Grid_3c09cfbca6d74bd6a9a0777996c15219['get_Children']())['Add'](StackPanel_086e8a16af3947f6aa4c83c1a5e3b4cf);
+      var Binding_cdc226370f034583babb99fee0e8bef0 = $S03().Construct();
+      Binding_cdc226370f034583babb99fee0e8bef0['set_Path']($T15().$Cast($T09()['ConvertFromInvariantString']($T15().__Type__, "BackgroundColor")));
+      this['set_Content'](Grid_3c09cfbca6d74bd6a9a0777996c15219);
+      this.wetter_icon = Image_da7226d377b24370906eded82c79286d;
+      this.Clock = TextBlock_9cc586f91d44480ea4c09dd8a373f2ae;
+      this.propmtLongDate = TextBlock_9370bc25fb234f8388d770d1dc306df5;
+      this.longDate = TextBlock_cfbadaa1e86746ea958588977637a897;
+      this.PartOfDay = TextBlock_197213046e3c4606920f91a031639d96;
+      this.info = TextBlock_613fa5fc614c45b68d7e68a55e887421;
+      this.warning = TextBlock_dfd821639fed44c6ad277814d2679b41;
+      this.wetter_text = TextBlock_834007e8e6d24eaf93cb659d5d1a382f;
+      this.erroInfo = TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6;
+      this.birthdays_text = TextBlock_9c3649882ac74c2e9afba70d431a4e14;
+      Image_da7226d377b24370906eded82c79286d['SetBinding']($T10().SourceProperty, Binding_12e5f108dfa043298dc71ba41ff6c25c);
+      TextBlock_9cc586f91d44480ea4c09dd8a373f2ae['SetBinding']($T05().TextProperty, Binding_05cd37d8ee8b456f9b3fe42e0b62c46f);
+      TextBlock_9cc586f91d44480ea4c09dd8a373f2ae['SetBinding']($T07().ForegroundProperty, Binding_1f0c0a04001b4a3a8dea572a362ccd2e);
+      TextBlock_9370bc25fb234f8388d770d1dc306df5['SetBinding']($T07().ForegroundProperty, Binding_9bbea704bcd34a23ba29b418cb8fec53);
+      TextBlock_cfbadaa1e86746ea958588977637a897['SetBinding']($T05().TextProperty, Binding_55b60bff90004fe7b7e1ec99235d5c7);
+      TextBlock_cfbadaa1e86746ea958588977637a897['SetBinding']($T07().ForegroundProperty, Binding_6e7d079c08b54fda8b0cc956182b60f);
+      TextBlock_197213046e3c4606920f91a031639d96['SetBinding']($T05().TextProperty, Binding_04328481456d41fcbaeecebe809eb04d);
+      TextBlock_197213046e3c4606920f91a031639d96['SetBinding']($T07().ForegroundProperty, Binding_cb9b4981c1f046e7bf697580e1f8644);
+      TextBlock_613fa5fc614c45b68d7e68a55e887421['SetBinding']($T05().TextProperty, Binding_3c477104609a42d0ba2e0c7fe71432da);
+      TextBlock_613fa5fc614c45b68d7e68a55e887421['SetBinding']($T07().ForegroundProperty, Binding_a01ed95c335b4763b90d0c84f2cec628);
+      TextBlock_dfd821639fed44c6ad277814d2679b41['SetBinding']($T05().TextProperty, Binding_a134d13528044346a923a328394195b0);
+      TextBlock_dfd821639fed44c6ad277814d2679b41['SetBinding']($T07().ForegroundProperty, Binding_f433f64dd6094ddd85357e6a6feb408b);
+      TextBlock_834007e8e6d24eaf93cb659d5d1a382f['SetBinding']($T05().TextProperty, Binding_dce5081343c64d749a5811be9d8b8eb3);
+      TextBlock_834007e8e6d24eaf93cb659d5d1a382f['SetBinding']($T07().ForegroundProperty, Binding_423b318c24bc4ad8af6787398853553c);
+      TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6['SetBinding']($T05().TextProperty, Binding_698e9669d92c48d98d7dfb6baf3a941a);
+      TextBlock_ce5a13fb3c614e64ba1b520e0a6dd1d6['SetBinding']($T07().ForegroundProperty, Binding_9acdbaeaecb048e696d9f87ca8bbe77f);
+      TextBlock_9c3649882ac74c2e9afba70d431a4e14['SetBinding']($T05().TextProperty, Binding_9306dfd659ee4fb1946a47145dad5060);
+      TextBlock_9c3649882ac74c2e9afba70d431a4e14['SetBinding']($T07().ForegroundProperty, Binding_5de18bb8a1ad45558598186661888861);
+      Grid_3c09cfbca6d74bd6a9a0777996c15219['SetBinding']($T1B().BackgroundProperty, Binding_cdc226370f034583babb99fee0e8bef0);
     }
   };
 
