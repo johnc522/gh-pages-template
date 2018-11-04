@@ -64,13 +64,13 @@ var $asm_senior_clock_html5 = JSIL.GetAssembly("senior_clock_html5, Version=1.0.
 
 if (typeof (contentManifest) !== "object") { JSIL.GlobalNamespace.contentManifest = {}; };
 contentManifest["index"] = [
-    ["Script", "app-cshtml5/app/senior_clock_html5.js?20181041503", { "sizeBytes": 81817 }],
-    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/mscorlib.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.dll.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.Xml.dll.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.Xaml.dll.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.ServiceModel.dll.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.Runtime.Serialization.dll.js?20181041503", { "sizeBytes": 0 }],
-    ["Script", "app-cshtml5/app/senior_clock_html5.Properties.Resources.js?20181041503", { "sizeBytes": 964 }],
+    ["Script", "app-cshtml5/app/senior_clock_html5.js?20181141929", { "sizeBytes": 81829 }],
+    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/mscorlib.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.dll.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.Xml.dll.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.Xaml.dll.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.ServiceModel.dll.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/CSharpXamlForHtml5.System.Runtime.Serialization.dll.js?20181141929", { "sizeBytes": 0 }],
+    ["Script", "app-cshtml5/app/senior_clock_html5.Properties.Resources.js?20181141929", { "sizeBytes": 964 }],
 ];
